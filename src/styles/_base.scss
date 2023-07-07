@@ -1,0 +1,37 @@
+@use 'colors' as c;
+
+@mixin button ($type: 'default') {
+    font-size: 18px;
+    border: none;
+    padding: 20px;
+    border-radius: 10px;
+
+    @if $type == accent {
+        background: c.$accent;
+        color: c.$bg;
+
+        &:hover {
+            background: darken($color: c.$accent, $amount: 30);
+        }
+
+    } @else if $type == primary {
+        background: c.$primary;
+        color: c.$bg;
+
+        &:hover {
+            background: darken($color: c.$accent, $amount: 40);
+        }
+
+    } @else {
+        background: none;
+
+        &:hover {
+            background: c.$primary;
+            color: c.$bg;
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+}

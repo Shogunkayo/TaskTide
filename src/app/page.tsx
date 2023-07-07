@@ -1,95 +1,103 @@
+'use client'
+
 import Image from 'next/image'
-import styles from './page.module.css'
+import './style.scss'
+import Hero from '@/assets/hero.png'
+import Kanban from '@/assets/kanban.png'
+import Dashboard from '@/assets/dashboard.png'
+import Computer from '@/assets/computer.png'
 
 export default function Home() {
-  return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+   
+    const isBrowser = () => typeof window !== 'undefined';
+
+    const scroll = (x: number) => {
+        console.log(x);
+        if (!isBrowser()) return;
+        window.scrollTo({top: x, behavior: 'smooth'})
+    }
+
+    return (
+        <div id='main'>
+        <main>
+            <nav>
+                <div>
+                    <h1>TaskTide</h1>
+                </div>
+                <div>
+                    <button className='button-default' onClick={() => {scroll(window.innerHeight)}}>Features</button>
+                    <button className='button-default' onClick={() => {scroll(window.innerHeight * 2 + 100)}}>Pricing</button>
+                    <button className='button-default' onClick={() => {scroll(window.innerHeight * 3)}}>Contact</button>
+                </div>
+                <div>
+                    <button className='button-default'>Log-in</button>
+                    <button className='button-primary'>Sign up</button>
+                </div>
+            </nav>
+
+            <div className='hero'>
+                <Image src={Hero} alt='hero' width={640} height={640}></Image>
+            </div>
+
+            <div className='content-main'>
+                <h1>The <span className='highlight'>modern</span> to do app.</h1>
+
+                <p>Stay organized, boost productivity, and achieve your goals like never before with <span className='highlight'><b> TaskTide</b></span><br></br>
+                Our intuitive and feature-packed to-do app combines the power of a <span className='highlight'><b> kanban board </b></span> and 
+                <span className='highlight'><b> graph views </b></span> to revolutionize your task management experience.</p>
+                
+                <button className='button-accent'>Get Started</button>
+            </div>
+
+            <div className='content-side'>
+                <p>Groups / Kanban / Graphs</p>
+            </div>
+        </main>
+
+        <div id='features'>
+            <div className='features-hero'>
+                <Image src={Kanban} alt='kanban' width={640} height={640}></Image>
+            </div>
+            <div className='features'>
+                <div>
+                    <h3 className='highlight-invert'>Kanban Board</h3>
+                    <p>Seamlessly organize and prioritize tasks with our intuitive drag-and-drop interface. Customize columns, add labels, 
+                    and assign due dates to streamline your workflow.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 className='highlight-invert'>Graph Views</h3>
+                    <p>Gain a deeper understanding of your task management with visually appealing graphs. Track completion rates, 
+                    identify peak productivity periods, and optimize your time for maximum efficiency.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 className='highlight-invert'>Collaborative Workspace</h3>
+                    <p>Collaborative Workspace: Share boards and tasks with colleagues, friends, or family members. Enjoy real-time collaboration and keep everyone 
+                    in sync to achieve your common goals.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 className='highlight-invert'>Reminders</h3>
+                    <p>
+                    Reminders and Notifications: Stay on track with reminders. Never miss a deadline or forget an important task again.
+                    </p>
+                </div>
+            </div>
+
         </div>
-      </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+        <div id='pricing'>
+            <Image src={Dashboard} alt='dashboard' width={640} height={640}></Image>
+        </div>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+        <div id='contact'>
+            <Image src={Computer} alt='computer' width={640} height={640}></Image>
+        </div>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+        </div>
+    )
 }

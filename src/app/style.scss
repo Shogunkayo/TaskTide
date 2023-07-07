@@ -1,0 +1,135 @@
+@use '@/styles/colors' as c;
+
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap');
+
+main {
+    background-size: 50px 10px;
+    background-image: radial-gradient(c.$secondary 5%, transparent 10%);
+    height: 100vh;
+}
+
+nav {
+    position: sticky;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 50px 0px 50px;
+    margin: 0 auto;
+
+    h1 {
+        font-size: 2.5rem;
+        transform: translateY(-5px);
+        background: -webkit-linear-gradient(
+            c.$black,
+            c.$primary,
+            c.$accent
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
+
+.highlight {
+    background: -webkit-linear-gradient(
+        c.$accent 60%,
+        darken(c.$accent, 15) 40%,
+        darken(c.$accent, 30) 5%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero {
+    position: absolute;
+    right: 200px;
+    transform: translateY(20px);
+}
+
+.content-main {
+    position: relative;
+    top: 300px;
+    left: 100px;
+    padding: 20px;
+    width: 43%;
+
+    h1 {
+        line-height: 90px;
+        font-size: 4rem;
+    }
+    p {
+        color: c.$primary;
+        line-height: 40px;
+    }
+    
+}
+
+.content-side {
+    position: absolute;
+    color: c.$black;
+    right: 180px;
+    bottom: 150px;
+    font-size: 1.2rem;
+    word-spacing: 10px;
+    letter-spacing: 15px;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+#features {
+    height: 100vh;
+    background: c.$primary;
+    display: flex;
+    padding-top: 60px;
+    color: c.$secondary;
+
+    .features-hero {
+        transform: translateY(120px) translateX(20px);
+    }
+
+    .features {
+        display: flex;
+        flex-wrap: wrap;
+        width: 60%;
+        transform: translateX(50px);
+        div {
+            padding: 50px;
+            margin: 20px;
+            width: 400px;
+            height: 250px;
+            border: 1px solid c.$accent;
+            border-radius: 10px;
+
+            h3 {
+                text-align: center;
+                font-size: 2rem;
+            }
+
+            p {
+                transform: translateY(30px);
+            }
+        }
+    }
+
+}
+
+.highlight-invert {
+    background: -webkit-linear-gradient(
+        c.$accent 30%,
+        c.$secondary
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#pricing {
+    height: 100vh;
+    padding-top: 60px;
+    background: c.$bg;
+}
+
+#contact {
+    height: 100vh;
+    background: c.$bg;
+}

@@ -1,5 +1,6 @@
 @use 'colors' as c;
 @use 'base' as b;
+@use 'breakpoints' as br;
 @import url('https://fonts.googleapis.com/css2?family=Inter&family=Poppins&display=swap');
 
 html, body {
@@ -9,6 +10,13 @@ html, body {
     font-size: 18px;
     background: c.$bg;
     color: c.$text;
+
+    @include br.md {
+        font-size: 14px;
+    }
+
+    overflow-x: hidden;
+
 }
 
 a, Link {
@@ -23,11 +31,19 @@ h1 {
     margin:0;
     font-size: 35px;
     font-family: 'Poppins', sans-serif;
+
+    @include br.md {
+        font-size: 28;
+    }
 }
 
 h3 {
     margin: 0;
     font-size: 28px;
+
+    @include br.md {
+        font-size: 24;
+    }
 }
 
 hr {
@@ -45,4 +61,72 @@ hr {
 
 .button-accent {
     @include b.button(accent);
+}
+
+form {
+    text-align: center;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    background: c.$bg;
+    
+    width: 70%;
+
+    >div {
+        padding: 30px 0px;
+    }
+
+    h3 {
+        font-size: 2rem;
+        padding: 30px 0px;
+    }
+
+    .required {
+        color: rgb(100, 0, 0);
+    }
+
+    @include br.xxl {
+    }
+
+    input, textarea {
+        border: none;
+        height: 30px;
+        width: 250px;
+        background: none;
+        border-bottom: 1px solid c.$secondary;
+        &:focus {
+            outline: none;
+        }
+        resize: vertical;
+        max-height: 150px;
+    }
+
+    textarea {
+        min-height: 30px;
+        font-size: 15px;
+    }
+
+    label {
+        color: darken($color: c.$secondary, $amount: 50);
+        position: absolute;
+        left: 40px;
+
+        @include br.xxl {
+            position: relative;
+            top: -40px;
+        }
+    }
+}
+
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: c.$black;
+}
+
+::-webkit-scrollbar-thumb {
+    background: c.$accent;
 }

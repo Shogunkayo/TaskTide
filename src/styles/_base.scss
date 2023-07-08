@@ -1,4 +1,5 @@
 @use 'colors' as c;
+@use 'breakpoints' as b;
 
 @mixin button ($type: 'default') {
     font-size: 18px;
@@ -33,5 +34,13 @@
 
     &:hover {
         cursor: pointer;
+    }
+
+    @include b.md {
+        font-size: 14px;
+    }
+
+    @include b.sm {
+        font-size: 12px; 
     }
 }

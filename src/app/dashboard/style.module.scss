@@ -1,0 +1,144 @@
+@use '@/styles/colors' as c;
+
+.sidebar-container {
+    height: 100vh;
+}
+
+.sidebarOpen {
+    max-width: 12%;
+    box-shadow: 5px 5px c.$primary;
+    .content>div, .logout {
+            border-radius: 20px;
+            &:hover {
+                background: c.$primary;
+                color: c.$bg;
+            }
+        }
+
+    .profile {
+        >div {
+            height: 96px;
+            width: 96px;
+            margin: 0 auto;
+            transform: translateY(-20px);
+        }
+        p {
+            transform: translateY(-10px);
+        }
+    }
+}
+
+.sidebarClosed {
+    max-width: 64px;
+    box-shadow: 3px 3px c.$primary;
+    .content>div>div, .logout>div {
+        &:hover {
+            background: c.$primary;
+            color: c.$bg;
+        }
+    }
+
+    .profile {
+        >div {
+            height:48px;
+            width:48px;
+        }
+    }
+
+    .logout {
+        margin-bottom: 20px;
+    }
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    background: darken($color: c.$bg, $amount: 5);
+    border-radius: 20px;
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.logo {
+    display: flex;
+    padding: 10px 0px;
+    margin-bottom: 40px;
+    position: relative;
+
+    div {
+        width: 32px;
+        height: 32px;
+        text-align: center;
+        padding: 8px;
+        border-radius: 5px;
+        
+        &:hover {
+            background: c.$primary;
+            color: c.$bg;
+        }
+    }
+
+    h1 {
+        cursor: default;
+        transform: translateY(-3px) translateX(15px) ;
+    }
+
+    hr {
+        position: absolute;
+        bottom: -20px;
+    }
+}
+
+.content {
+    margin-bottom: 20px;
+    >div {
+        display: flex;
+        padding: 5px 0px;
+        margin: 5px 0px;
+
+        >div {
+            padding: 8px;
+            border-radius: 5px;
+            transform: translateY(5px);
+        }
+
+        p {
+            cursor: default;
+            transform:  translateX(4px);
+        }
+    }
+}
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    transform: translateX(-2px);
+    >div {
+        border-radius: 50%;
+        border: 1px solid c.$primary;
+    }
+}
+
+.logout {
+    margin-top: 10px;
+    display: flex;
+    >div {
+        padding: 8px;
+        width: 32px;
+        height: 32px;
+        border-radius: 5px;
+        transform: translateY(5px);
+    }
+
+    p {
+        cursor: default;
+        transform: translateX(4px);
+    }
+}
+

@@ -48,7 +48,7 @@ h3 {
 
 hr {
     width: 95%;
-    color: c.$secondary;
+    color: transparentize($color: c.$secondary, $amount: 0.75);
 }
 
 .button-default {
@@ -130,3 +130,26 @@ form {
 ::-webkit-scrollbar-thumb {
     background: c.$accent;
 }
+
+.highlight-logo {
+    background: linear-gradient(
+        c.$black,
+        c.$primary,
+        c.$accent
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.highlight {
+    background: linear-gradient(
+        c.$accent 60%,
+        darken(c.$accent, 15) 40%,
+        darken(c.$accent, 30) 5%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+

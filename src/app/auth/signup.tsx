@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
+import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth'
 import { useDispatch } from 'react-redux'
 import { auth } from './firebase'
 import { toast } from 'react-toastify'
@@ -17,6 +17,7 @@ const Signup = (props: Props) => {
 
     const [inputs, setInputs] = useState({username: '', email: '', password: '', password_verify: ''})
     const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth)
+    const [updateProfile, updating, profileError] = useUpdateProfile(auth)
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputs((prev) => ({...prev, [e.target.name]: e.target.value}))
@@ -39,6 +40,7 @@ const Signup = (props: Props) => {
                 toast.error("Email is already in use", {position: "top-center", autoClose: 3000, theme: "dark"})
                 return
             };
+            await updateProfile({displayName: inputs.username})
             router.push('/')
         } catch (error: any) {
             toast.error(error.message, {position: "top-center", autoClose: 3000, theme: "dark"})

@@ -10,6 +10,7 @@ import AuthModal from '../auth/authModal';
 import LoginBtn from './buttons/loginBtn';
 import SignupBtn from './buttons/signupBtn';
 import {FaArrowDown, FaArrowUp, FaHome} from 'react-icons/fa'
+
 type Props = {}
 
 const Navbar = (props: Props) => {

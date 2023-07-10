@@ -6,16 +6,18 @@ import styles from './style.module.scss'
 import { useRouter } from 'next/navigation'
 import { auth } from '../auth/firebase'
 import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { RootState } from '../redux/store'
 
 type Props = {}
 
 const Dashboard = (props: Props) => {
+    const active = useSelector((state: RootState) => state.view.active)
     const router = useRouter();
     const [user, loading, error] = useAuthState(auth)
     
     useEffect(() => {
         if (!user && !loading) router.push("/");
-        if (user) console.log(user);
     }, [user, router, loading])
     
     if (loading) {
@@ -29,7 +31,7 @@ const Dashboard = (props: Props) => {
     return (
         <div>
             <div className={styles['sidebar-container']}>
-                <Sidebar username={user?.displayName} email={user?.email}></Sidebar>
+                <Sidebar username={user?.displayName} email={user?.email} active={active}></Sidebar>
             </div>
         </div>
     )

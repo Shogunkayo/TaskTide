@@ -5,10 +5,23 @@
 }
 
 .sidebarOpen {
+    position: absolute;
+    border: 2px solid c.$primary;
+    top: 0;
+    bottom:0;
     max-width: 12%;
-    box-shadow: 5px 5px c.$primary;
+    .logo {
+        hr {
+            transform: translateY(10px);
+        }
+    }
+
+    .active {
+        background: darken($color: c.$accent, $amount: 30);
+    }
+
     .content>div, .logout {
-            border-radius: 20px;
+            border-radius: 25px;
             &:hover {
                 background: c.$primary;
                 color: c.$bg;
@@ -17,18 +30,25 @@
 
     .profile {
         >div {
-            height: 96px;
-            width: 96px;
+            height: 64px;
+            width: 64px;
             margin: 0 auto;
             transform: translateY(-20px);
         }
         p {
             transform: translateY(-10px);
+            color: darken($color: c.$secondary, $amount: 20);
         }
     }
 }
 
 .sidebarClosed {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    border-radius: 20px;
     max-width: 64px;
     box-shadow: 3px 3px c.$primary;
     .content>div>div, .logout>div {
@@ -38,6 +58,10 @@
         }
     }
 
+    .active>div {
+        background: darken($color: c.$accent, $amount: 30);
+    }
+
     .profile {
         >div {
             height:48px;
@@ -45,8 +69,29 @@
         }
     }
 
+    .logo {
+        margin-bottom: 20px;
+    }
+
+    .content {
+        margin-bottom: 20px;
+
+        >div {
+        margin: 5px 0px;
+        }
+    }
+
     .logout {
         margin-bottom: 20px;
+        margin-top: 10px;
+    }
+
+    .logo, .content, .logout {
+        transform: translateX(5px);
+    }
+
+    hr {
+        transform: translateX(-3px);
     }
 }
 
@@ -56,18 +101,12 @@
     justify-content: space-between;
     padding: 10px;
     background: darken($color: c.$bg, $amount: 5);
-    border-radius: 20px;
-    position: relative;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
 }
 
 .logo {
     display: flex;
     padding: 10px 0px;
-    margin-bottom: 40px;
+
     position: relative;
 
     div {
@@ -76,7 +115,7 @@
         text-align: center;
         padding: 8px;
         border-radius: 5px;
-        
+        cursor: pointer; 
         &:hover {
             background: c.$primary;
             color: c.$bg;
@@ -90,16 +129,16 @@
 
     hr {
         position: absolute;
-        bottom: -20px;
+        bottom: -15px;
     }
 }
 
 .content {
-    margin-bottom: 20px;
     >div {
         display: flex;
         padding: 5px 0px;
         margin: 5px 0px;
+        cursor: pointer;
 
         >div {
             padding: 8px;
@@ -108,13 +147,13 @@
         }
 
         p {
-            cursor: default;
             transform:  translateX(4px);
         }
     }
 }
 
 .profile {
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -126,8 +165,10 @@
 }
 
 .logout {
-    margin-top: 10px;
+    cursor: pointer;
     display: flex;
+    position: relative;
+
     >div {
         padding: 8px;
         width: 32px;
@@ -137,8 +178,15 @@
     }
 
     p {
-        cursor: default;
         transform: translateX(4px);
+    }
+
+    hr {
+        position: absolute;
+        top: -20px;
     }
 }
 
+.active {
+    color: c.$bg;
+}

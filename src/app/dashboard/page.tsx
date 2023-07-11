@@ -8,6 +8,7 @@ import { auth } from '../auth/firebase'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
+import Topbar from './components/topbar'
 
 type Props = {}
 
@@ -30,6 +31,9 @@ const Dashboard = (props: Props) => {
 
     return (
         <div>
+            <div className={styles['topbar-container']}>
+                <Topbar></Topbar>
+            </div>
             <div className={styles['sidebar-container']}>
                 <Sidebar username={user?.displayName} email={user?.email} active={active}></Sidebar>
             </div>

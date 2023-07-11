@@ -1,14 +1,12 @@
 @use '@/styles/colors' as c;
 
-.sidebar-container {
-    height: 100vh;
-}
-
 .sidebarOpen {
     position: absolute;
-    border: 2px solid c.$primary;
-    top: 0;
-    bottom:0;
+    transform: translateX(10px);
+    box-shadow: 5px 5px c.$primary;
+    border-radius: 40px;
+    top: 20px;
+    bottom: 20px;
     max-width: 12%;
     .logo {
         hr {
@@ -22,6 +20,8 @@
 
     .content>div, .logout {
             border-radius: 25px;
+            padding: 2px 0px;
+            margin: 2px 0px;
             &:hover {
                 background: c.$primary;
                 color: c.$bg;
@@ -100,7 +100,7 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 10px;
-    background: darken($color: c.$bg, $amount: 5);
+    background: c.$bg;
 }
 
 .logo {
@@ -124,7 +124,7 @@
 
     h1 {
         cursor: default;
-        transform: translateY(-3px) translateX(15px) ;
+        transform: translateY(-3px) translateX(5px) ;
     }
 
     hr {

@@ -19,14 +19,17 @@ const Navbar = (props: Props) => {
     const router = useRouter()
     const [pageLoading, setPageLoading] = useState(true)
     const isBrowser = () => typeof window !== 'undefined';
+
     const scroll = (x: number) => {
         if (!isBrowser()) return;
         window.scrollTo({top: x, behavior: 'smooth'})
     }
 
     useEffect(() => {
+        console.log("Navbar start")
         if(user) router.push('/dashboard')
         if(!loading && !user) setPageLoading(false)
+        console.log("Navbar end")
     }, [user, router, loading])
 
     if (pageLoading) return null;

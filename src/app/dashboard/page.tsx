@@ -2,7 +2,7 @@
 
 import { useAuthState } from 'react-firebase-hooks/auth'
 import Sidebar from './components/sidebar'
-import styles from './style.module.scss'
+import styles from './dashboard.module.scss'
 import { useRouter } from 'next/navigation'
 import { auth } from '../auth/firebase'
 import { useEffect } from 'react'
@@ -30,7 +30,7 @@ const Dashboard = (props: Props) => {
     }
 
     return (
-        <div>
+        <div className={styles.dashboard}>
             <div className={styles['topbar-container']}>
                 <Topbar></Topbar>
             </div>

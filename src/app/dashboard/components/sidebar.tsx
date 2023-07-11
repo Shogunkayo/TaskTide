@@ -12,7 +12,7 @@ import { useState } from 'react'
 import { useSignOut } from 'react-firebase-hooks/auth'
 import { auth } from '@/app/auth/firebase'
 import { useRouter } from 'next/navigation'
-import styles from '../style.module.scss'
+import styles from './sidebar.module.scss'
 import { useDispatch } from 'react-redux'
 import { changeView } from '@/app/redux/features/viewSlice'
 

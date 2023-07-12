@@ -14,8 +14,7 @@
 
 .left {
     display: flex;
-    justify-content: space-around;
-    width: 40%;
+    gap: 20px;
 }
 
 .right {
@@ -48,7 +47,7 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    padding: 10px;
+    padding: 1px 15px;
     border-radius: 10px;
 
     div {
@@ -65,16 +64,60 @@
     color: c.$bg;
     background: c.$primary;
 }
-
+ 
 .calendar-open {
     position: absolute;
+    transform: translateX(-395px);
     background: c.$bg;
     border: 6px solid c.$primary;
     border-radius: 20px;
+    padding: 5px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
+    column-gap: 40px;
+
+    > div {
+        position: relative;
+        &:nth-child(3)::after {
+            content: "";
+            position: absolute;
+            top: -20%;
+            right: -25px;
+            height: 120%;
+            width: 1px;
+            background-color: c.$secondary;
+        }
+    }
+
+    .calendar-head-left {
+        padding: 10px;
+        margin: 10px;
+        display: grid;
+        grid-template-columns: 5fr 1fr 1fr;
+    
+        button {
+            background: none;
+            border: none;
+            border-radius: 25px;
+            &:hover {
+                cursor: pointer;
+                background: lighten($color: c.$secondary, $amount: 10); 
+            }
+        }
+    }
+
+    .calendar-head-right {
+        text-align: center;
+        margin: 10px;
+        h4 {
+            font-size: 1.2rem;
+        }
+    }
 
     .calendar-left {
         display: grid;
-
+        margin: 5px;
         .days {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -88,9 +131,24 @@
             grid-template-columns: repeat(7, 1fr);
             text-align: right;
             button {
-                border-radius: 25px;
+                padding: 12px;
+                margin: 8px;
+                border-radius: 17px;
                 &:not(.selected-date):hover {
                     background: lighten($color: c.$secondary, $amount: 10); 
+                }
+            }
+
+            >div {
+                position: relative;
+                &:not(:nth-last-child(-n+7))::after {
+                    content: "";
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 1px;
+                    background-color: c.$secondary;
                 }
             }
         }
@@ -104,6 +162,10 @@
             color: c.$bg;
         }
 
+        .diff-month {
+            color: darken($color: c.$secondary, $amount: 20)
+        }
+
         .task-indicator::after {
             content: '.';
             font-size: 1.7rem;
@@ -114,8 +176,69 @@
             }
         }
     }
-}
 
+    .calendar-right {
+        .tasks-empty {
+            text-align: center;
+            p {
+                font-size: 1.3rem;
+                color: darken($color: c.$secondary, $amount: 30);
+                transform: translateY(-50px) translateX(-10px);
+            }
+        }
+
+        .tasks {
+            overflow-y: auto;
+            max-height: 400px;
+            background: lighten($color: c.$secondary, $amount: 10);
+            transform: translateX(-7px);
+        }
+
+        .task-card {
+            width: 90%;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 20px;
+            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-rows: 60px 1fr;
+            background: c.$bg;
+            box-shadow: 5px 5px 5px c.$primary;
+
+            &:hover {
+                transform: translateX(-5px) translateY(-5px);
+            }
+
+            h4 {
+                grid-column: 1 / 5;
+                font-size: 1.1rem;
+                overflow: hidden;
+            }
+
+            p {
+                width: fit-content;
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            div {
+                height: 24px;
+                width: 24px;
+                padding: 15px;
+                border-radius: 15px;
+                cursor: pointer;
+                grid-column-start: 4;
+                transform: translateY(15px);
+
+                &:hover {
+                    background: c.$primary;
+                    color: c.$bg;
+                }
+            }
+        } 
+    }
+}
 
 .task-open {
 

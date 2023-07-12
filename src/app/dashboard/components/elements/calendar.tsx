@@ -1,6 +1,6 @@
 'use client'
 
-import { add, eachDayOfInterval, endOfMonth, endOfWeek, format, parse, startOfMonth, startOfToday } from 'date-fns'
+import { add, eachDayOfInterval, endOfMonth, endOfWeek, format, isEqual, parse, startOfMonth, startOfToday } from 'date-fns'
 import React, { useState } from 'react'
 import {AiFillCaretDown} from 'react-icons/ai'
 import styles from '../topbar.module.scss';
@@ -27,6 +27,10 @@ const Calendar = (props: Props) => {
         setCurrentMonth(format(firstDayLastMonth, 'MMM-yyyy'))
     }
 
+    const hasTasks = (date: Date) => {
+        return false
+    }
+
     return (
         <>
             <div className={`${styles['calendar-closed']} ${isOpen ? styles['calendar-top-open'] : ''}`} onClick={() => setIsOpen(!isOpen)}>
@@ -35,22 +39,33 @@ const Calendar = (props: Props) => {
             </div>
             {isOpen && (
                 <div className={styles['calendar-open']}>
-                    <div>
+                    <div className={styles['calendar-head']}>
                         <h4>{format(firstDayCurrentMonth, 'MMM yyyy')}</h4>
                         <button onClick={nextMonth}>{'>'}</button>
                         <button onClick={prevMonth}>{'<'}</button>
                     </div>
-                    <div>
-                        <div>
-                            {days.map((day, i) => (<p key={i}>{day}</p>))}
+                    <div className={styles['calendar-left']}>
+                        <div className={styles['days']}>
+                            {days.map((day, i) => (<button className='button-default no-hover' key={i}>{day}</button>))}
                         </div>
-                        <div>
+                        <div className={styles['dates']}>
                             {newDays.map((day) => (
                                 <div key={day.toString()}>
-                                    <button><time dateTime={format(day, 'yyyy-MM-dd')}>{format(day, 'd')}</time></button>
+                                    <button className={`button-default no-hover 
+                                        ${isEqual(day, today) ? styles.today : ''} 
+                                        ${isEqual(day, selectedDay) ? styles['selected-date'] : ''}
+                                        ${hasTasks(day) ? styles['task-indicator'] : ''}`}
+                                         
+                                        onClick={() => setSelectedDay(day)}
+                                    >
+                                        <time dateTime={format(day, 'yyyy-MM-dd')}>{format(day, 'dd')}</time>
+                                    </button>
                                 </div>
                             ))}
                         </div>
+                    </div>
+                    <div className={styles['calendar-right']}>
+
                     </div>
                 </div>
             )}

@@ -68,6 +68,52 @@
 
 .calendar-open {
     position: absolute;
+    background: c.$bg;
+    border: 6px solid c.$primary;
+    border-radius: 20px;
+
+    .calendar-left {
+        display: grid;
+
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            button {
+                color: darken($color: c.$secondary, $amount: 30);
+            }
+        }
+
+        .dates {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: right;
+            button {
+                border-radius: 25px;
+                &:not(.selected-date):hover {
+                    background: lighten($color: c.$secondary, $amount: 10); 
+                }
+            }
+        }
+
+        .today {
+            color: darken($color: c.$accent, $amount: 20);
+        }
+    
+        .selected-date {
+            background: c.$primary;
+            color: c.$bg;
+        }
+
+        .task-indicator::after {
+            content: '.';
+            font-size: 1.7rem;
+            position: absolute;
+            transform: translateY(-30px) translateX(-5px);
+            &:not(.selected-date) {
+                color: darken($color: c.$secondary, $amount: 40);
+            }
+        }
+    }
 }
 
 

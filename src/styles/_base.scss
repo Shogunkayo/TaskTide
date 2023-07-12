@@ -11,7 +11,7 @@
         background: c.$accent;
         color: c.$bg;
 
-        &:hover {
+        &:not(.no-hover):hover {
             background: darken($color: c.$accent, $amount: 30);
         }
 
@@ -19,14 +19,14 @@
         background: c.$primary;
         color: c.$bg;
 
-        &:hover {
+        &:not(.no-hover):hover {
             background: darken($color: c.$accent, $amount: 40);
         }
 
     } @else {
         background: none;
 
-        &:hover {
+        &:not(.no-hover):hover {
             background: c.$primary;
             color: c.$bg;
         }

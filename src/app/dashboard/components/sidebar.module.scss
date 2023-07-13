@@ -3,11 +3,11 @@
 .sidebarOpen {
     position: absolute;
     transform: translateX(10px);
-    box-shadow: 5px 5px c.$primary;
-    border-radius: 40px;
+    box-shadow: 5px 5px 15px c.$primary;
+    border-radius: 20px;
     top: 20px;
     bottom: 20px;
-    max-width: 12%;
+    width: 12%;
     .logo {
         hr {
             transform: translateY(10px);
@@ -50,7 +50,7 @@
     transform: translateY(-50%);
     border-radius: 20px;
     max-width: 64px;
-    box-shadow: 3px 3px c.$primary;
+    box-shadow: 3px 3px 10px c.$primary;
     .content>div>div, .logout>div {
         &:hover {
             background: c.$primary;
@@ -147,6 +147,7 @@
         }
 
         p {
+            font-size: 0.9rem;
             transform:  translateX(4px);
         }
     }
@@ -161,6 +162,14 @@
     >div {
         border-radius: 50%;
         border: 1px solid c.$primary;
+    }
+
+    h3 {
+        font-size: 1.3rem;
+    }
+
+    p {
+        font-size: 0.8rem;
     }
 }
 

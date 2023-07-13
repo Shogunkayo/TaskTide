@@ -29,7 +29,7 @@ const Sidebar = (props: Props) => {
     const [isOpen, setIsOpen] = useState(false)
     const [isActive, setIsActive] = useState({0: false, 1: false, 2: false, 3: false, 4: false, 5: false, 6: false})
 
-    const iconSize = 32;
+    const iconSize = 24;
 
     const contents = [
         {'icon': (<RiDashboardFill size={iconSize}></RiDashboardFill>), 'p': 'Dashboard'},

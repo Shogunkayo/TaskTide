@@ -6,8 +6,9 @@ type Props = {}
 
 const CatBtn = (props: Props) => {
     return (
-
-        <button className='button-default'>New Category</button>
+        <div>
+            <button className='button-default'>New Category</button>
+        </div>
     )
 }
 

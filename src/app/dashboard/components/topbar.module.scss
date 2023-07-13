@@ -7,7 +7,7 @@
     justify-content: space-around;
     align-items: center;
     background: c.$bg;
-    box-shadow: 4px 4px c.$primary;
+    box-shadow: 4px 4px 15px c.$primary;
     border-radius: 20px;
     padding: 10px 0px;
 }
@@ -18,9 +18,13 @@
 }
 
 .right {
+    display: flex;
     button {
         margin: 0 5px;
-    } 
+    }
+    >div {
+        position: relative;
+    }
 }
 
 .clock {
@@ -66,10 +70,12 @@
 }
  
 .calendar-open {
+    z-index: 10;
     position: absolute;
     transform: translateX(-395px);
     background: c.$bg;
-    border: 6px solid c.$primary;
+    border: 3px solid c.$primary;
+    box-shadow: 7px 7px 10px c.$primary;
     border-radius: 20px;
     padding: 5px;
     display: grid;
@@ -240,6 +246,53 @@
     }
 }
 
-.task-open {
+.task-container {
+    box-shadow: 7px 7px 10px c.$primary;
+    position: absolute;
+    z-index: 10;
+    border: 3px solid c.$primary;
+    border-radius: 20px;
+    background: c.$bg;
+    right: 0;
+    transform: translateX(215px);
+    .close-btn {
+        border-radius: 20px;
+        margin: 10px 85%;
+    }
 
+    .task-open {
+        width: 500px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        grid-template-rows: repeat(6, 1fr);
+
+        >div {
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        label {
+            transform: translateY(-5px);
+        }
+
+        input, textarea {
+            transform: translateX(100px);
+        }
+
+        select {
+            transform: translateX(100px);
+            font-size: 1.2rem;
+            background: none;
+            border: none;
+            padding: 5px;
+            border-bottom: 1px solid c.$secondary;
+            width: 250px; 
+        }
+        button {
+            margin: 15px 0;
+        }
+    }
 }

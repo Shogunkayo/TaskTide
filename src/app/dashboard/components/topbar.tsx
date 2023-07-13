@@ -16,7 +16,6 @@ const Topbar = (props: Props) => {
                 <div className={styles.calendar}><Calendar></Calendar></div>
             </div>
             <div className={styles.right}>
-                <CatBtn></CatBtn>
                 <TaskBtn></TaskBtn>
             </div>
         </nav>

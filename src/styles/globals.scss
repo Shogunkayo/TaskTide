@@ -85,9 +85,6 @@ form {
         color: rgb(100, 0, 0);
     }
 
-    @include br.xxl {
-    }
-
     input, textarea {
         border: none;
         height: 30px;

@@ -7,6 +7,7 @@
     background-size: 50px 10px;
     background-image: radial-gradient(c.$secondary 5%, transparent 10%);
     height: 100vh;
+    position: relative;
 
     @include br.lg {
         display: flex;
@@ -62,7 +63,6 @@
 }
 
 .content-main {
-
     @include br.lg-inverse{
         position: relative;
         top: 300px;
@@ -113,7 +113,7 @@
     @include br.lg-inverse {
         position: absolute;
         right: 160px;
-        bottom: 5%;
+        bottom: 10%;
         font-size: 1.2rem;
     }
 

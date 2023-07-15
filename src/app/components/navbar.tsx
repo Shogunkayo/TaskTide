@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { auth } from '../auth/firebase';
 import { useRouter } from 'next/navigation';
@@ -10,11 +10,13 @@ import AuthModal from '../auth/authModal';
 import LoginBtn from './buttons/loginBtn';
 import SignupBtn from './buttons/signupBtn';
 import {FaArrowDown, FaArrowUp, FaHome} from 'react-icons/fa'
+import { setUser } from '../redux/features/authSlice';
 
 type Props = {}
 
 const Navbar = (props: Props) => {
     const authModal = useSelector((state: RootState) => state.auth);
+    const dispatch = useDispatch()
     const [user, loading, error] = useAuthState(auth)
     const router = useRouter()
     const [pageLoading, setPageLoading] = useState(true)
@@ -26,10 +28,11 @@ const Navbar = (props: Props) => {
     }
 
     useEffect(() => {
-        console.log("Navbar start")
-        if(user) router.push('/dashboard')
+        if(user && !authModal.isOpen) {
+            dispatch(setUser({'id': user.uid, 'username': user.displayName, 'photo': user.photoURL, 'email': user.email})) 
+            router.push('/dashboard')
+        }
         if(!loading && !user) setPageLoading(false)
-        console.log("Navbar end")
     }, [user, router, loading])
 
     if (pageLoading) return null;

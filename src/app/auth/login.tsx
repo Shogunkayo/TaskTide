@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
 import { auth } from './firebase'
 import { toast } from 'react-toastify'
-import { changeType } from '../redux/features/authSlice'
+import { changeType, setUser } from '../redux/features/authSlice'
 import GoogleBtn from '../components/buttons/google'
 
 type Props = {}
@@ -35,7 +35,13 @@ const Login = (props: Props) => {
         try {
             const newUser = await signInWithEmailAndPassword(inputs.email, inputs.password)
             if (!newUser) return
-            router.push('/dashboard')
+            dispatch(setUser({'id': newUser.user.uid, 'username': newUser.user.displayName, 'photo': newUser.user.photoURL, 'email': newUser.user.email}))
+            if (!newUser.user.displayName || !newUser.user.photoURL){
+                router.push('/creation')
+            }
+            else {
+                router.push('/dashboard')
+            }
 
         } catch (error: any) {
             console.log(error.message)

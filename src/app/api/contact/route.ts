@@ -48,7 +48,6 @@ const generateEmail = (data: any) => {
 export async function POST(req: Request){
     if(req.method === 'POST') {
         const data: dataType = await req.json();
-        console.log("SERVERR", data);
 
         if (!data.email || !data.message) {
             return NextResponse.json({ message: "Bad Request"}, {status: 400});

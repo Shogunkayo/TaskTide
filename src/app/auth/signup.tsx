@@ -2,22 +2,22 @@
 
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth'
-import { useDispatch } from 'react-redux'
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
+import { useDispatch, useSelector } from 'react-redux'
 import { auth } from './firebase'
 import { toast } from 'react-toastify'
-import { changeType } from '../redux/features/authSlice'
+import { changeType, setUser } from '../redux/features/authSlice'
 import GoogleBtn from '../components/buttons/google'
+import { RootState } from '../redux/store'
 
 type Props = {}
 
 const Signup = (props: Props) => {
     const dispatch = useDispatch();
     const router = useRouter();
-
-    const [inputs, setInputs] = useState({username: '', email: '', password: '', password_verify: ''})
+    const uid = useSelector((state: RootState) => state.auth.user?.id)
+    const [inputs, setInputs] = useState({email: '', password: '', password_verify: ''})
     const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth)
-    const [updateProfile, updating, profileError] = useUpdateProfile(auth)
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputs((prev) => ({...prev, [e.target.name]: e.target.value}))
@@ -25,7 +25,7 @@ const Signup = (props: Props) => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!inputs.email || !inputs.password || !inputs.username || !inputs.password_verify) {
+        if (!inputs.email || !inputs.password || !inputs.password_verify) {
             toast.error("All fields are required", {position: "top-center", autoClose: 3000, theme: "dark"})
             return
         }
@@ -40,24 +40,21 @@ const Signup = (props: Props) => {
                 toast.error("Email is already in use", {position: "top-center", autoClose: 3000, theme: "dark"})
                 return
             };
-            await updateProfile({displayName: inputs.username})
-            router.push('/')
+            dispatch(setUser({'id': newUser.user.uid, 'email': newUser.user.email}))
+            router.push('/creation')
         } catch (error: any) {
             toast.error(error.message, {position: "top-center", autoClose: 3000, theme: "dark"})
         }
     }
 
     useEffect(() => {
+        if (uid) return router.push('/creation') 
         if (error) toast.error(error.message, {position: "top-center", autoClose: 3000, theme: "dark"})            
     }, [error])
 
     return (
         <form onSubmit={handleSubmit}>
             <h3>Sign up to <span className='highlight-logo'>TaskTide</span></h3>
-            <div>
-                <label htmlFor='username'>Username <span className='required'> * </span></label>
-                <input name='username' placeholder='username' onChange={handleChangeInput}/>
-            </div>
             <div>
                 <label htmlFor='email'>E-mail <span className='required'> * </span></label>
                 <input type='email' name='email' placeholder='name@website.com' onChange={handleChangeInput}/>

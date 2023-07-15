@@ -6,23 +6,21 @@ import { SiGraphql } from 'react-icons/si'
 import { HiUserGroup } from 'react-icons/hi'
 import { IoNotifications } from 'react-icons/io5'
 import { LuMenu } from 'react-icons/lu'
-import Hero from '@/assets/hero.png' 
 import Image from 'next/image'
 import { useState } from 'react'
-import { useSignOut } from 'react-firebase-hooks/auth'
+import { useAuthState, useSignOut } from 'react-firebase-hooks/auth'
 import { auth } from '@/app/auth/firebase'
 import { useRouter } from 'next/navigation'
 import styles from './sidebar.module.scss'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector} from 'react-redux'
 import { changeView } from '@/app/redux/features/viewSlice'
 
 type Props = {
-    username ?: string | null,
-    email ?: string | null,
     active: number
 }
 
 const Sidebar = (props: Props) => {
+    const [user, usrloading, usrerror] = useAuthState(auth)
     const dispatch = useDispatch();
     const router = useRouter();
     const [signout, loading, error] = useSignOut(auth);
@@ -62,9 +60,9 @@ const Sidebar = (props: Props) => {
 
             <div className={styles.profile}>
                 {isOpen && <>
-                    <div><Image src={Hero} alt='profile' width={64} height={64}></Image></div>
-                    <h3>{props.username}</h3>
-                    <p>{props.email}</p>
+                    <div><Image src={user?.photoURL ? user.photoURL : ''} alt='profile' width={64} height={64}></Image></div>
+                    <h3>{user?.displayName}</h3>
+                    <p>{user?.email}</p>
                 </>}
             </div>
 

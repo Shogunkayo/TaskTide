@@ -256,6 +256,7 @@
     right: 0;
     transform: translateX(215px);
     .close-btn {
+        z-index: 30;
         border-radius: 20px;
         margin: 10px 85%;
     }
@@ -268,6 +269,7 @@
         justify-content: space-around;
         align-items: center;
         grid-template-rows: repeat(6, 1fr);
+        transform: translateY(-30px);
 
         >div {
             display: flex;

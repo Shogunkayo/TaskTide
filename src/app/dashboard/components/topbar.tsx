@@ -3,7 +3,7 @@ import Clock from './elements/clock'
 import Calendar from './elements/calendar'
 import styles from './topbar.module.scss'
 import TaskBtn from './elements/taskBtn'
-import CatBtn from './elements/catBtn'
+
 type Props = {}
 
 const Topbar = (props: Props) => {

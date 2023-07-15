@@ -14,10 +14,12 @@ type Props = {}
 
 const Dashboard = (props: Props) => {
     const active = useSelector((state: RootState) => state.view.active)
+    const usr = useSelector((state: RootState) => state.auth.user)
     const router = useRouter();
     const [user, loading, error] = useAuthState(auth)
     
     useEffect(() => {
+        console.log("DASHBOARD", usr, user)
         if (!user && !loading) router.push("/");
     }, [user, router, loading])
     
@@ -35,7 +37,7 @@ const Dashboard = (props: Props) => {
                 <Topbar></Topbar>
             </div>
             <div className={styles['sidebar-container']}>
-                <Sidebar username={user?.displayName} email={user?.email} active={active}></Sidebar>
+                <Sidebar active={active}></Sidebar>
             </div>
         </div>
     )

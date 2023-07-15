@@ -150,3 +150,6 @@ form {
     -webkit-text-fill-color: transparent;
 }
 
+img, Image {
+    pointer-events: none;
+}

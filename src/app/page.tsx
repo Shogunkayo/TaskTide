@@ -14,8 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function Home() { 
     return (
         <div id='main'>
-            <main>
-                
+            <main> 
                 <Navbar></Navbar>
 
                 <div className='hero'>
@@ -29,11 +28,9 @@ export default function Home() {
                 <div className='content-main'>
                     <h1>The <span className='highlight'>modern</span> to do app.</h1>
 
-                    <p>Stay organized, boost productivity, and achieve your goals like never before with <span className='highlight'><b> TaskTide</b></span><br></br>
-                    Our intuitive and feature-packed to-do app combines the power of a <span className='highlight'><b> kanban board </b></span> and 
-                    <span className='highlight'><b> graph views </b></span> to revolutionize your task management experience.</p>
-                    
-                    <SignupBtn text={"Get Started"} type={"button-accent"}></SignupBtn>
+                    <p>Stay organized, boost productivity, and achieve your goals like never before with <span className='highlight-invert'><b> TaskTide</b></span><br></br>
+                    Our intuitive and feature-packed to-do app combines the power of a <span className='highlight-invert'><b> kanban board </b></span> and 
+                    <span className='highlight-invert'><b> graph views </b></span> to revolutionize your task management experience.</p>
                 </div>
 
 

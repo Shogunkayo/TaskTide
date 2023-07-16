@@ -17,7 +17,6 @@
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.7",
     "firebase": "^9.23.0",
-    "firebaseui": "^6.0.2",
     "next": "13.4.7",
     "next-recaptcha-v3": "^1.2.0",
     "nodemailer": "^6.9.3",

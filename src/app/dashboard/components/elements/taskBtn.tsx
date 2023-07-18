@@ -5,12 +5,12 @@ import { IoClose } from 'react-icons/io5'
 import styles from '../topbar.module.scss'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, arrayUnion, collection, doc, setDoc, updateDoc } from 'firebase/firestore'
 import { auth, db } from '@/app/auth/firebase'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/app/redux/store'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { addCategories, addTasks } from '@/app/redux/features/taskSlice'
+import { addCategories, addTaskDays, addTaskToCategory, addTasks } from '@/app/redux/features/taskSlice'
 
 type Props = {}
 
@@ -19,7 +19,7 @@ const TaskBtn = (props: Props) => {
     const dispatch = useDispatch()
     const [user, loading, _] = useAuthState(auth)
     const [isOpen, setIsOpen] = useState(false);
-    const initialState = {'title': '', 'description': '', 'color': '#000000', 'category': 'none', 'deadline': '', 'newCategory': '', 'priority': 'low'}
+    const initialState = {'title': '', 'description': '', 'color': '#000000', 'category': 'none', 'deadline': '', 'categoryName': '', 'priority': 'low'}
     const [inputs, setInputs] = useState(initialState);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLTextAreaElement>) => {
@@ -28,21 +28,68 @@ const TaskBtn = (props: Props) => {
 
     const createNewTask = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!inputs['title'] || (inputs['category'] === 'new' && !inputs['newCategory']))
+        if (!inputs['title'] || (inputs['category'] === 'new' && !inputs['categoryName']))
             return toast.error("Please fill all required fields", {position: 'top-center', autoClose:3000, theme:'dark'})
+        
+        let taskData = {...inputs, completed: false, isSingle: inputs['category'] === 'none' ? true : false, taskOf: user?.uid, 
+            ['deadline']: inputs['deadline'] ? new Date(inputs['deadline']) : new Date('9999-12-31T23:59:59.999999999Z'), createdAt: new Date()}
 
-        const taskData = {...inputs, completed: false, isSingle: inputs['category'] === 'none' ? true : false, taskOf: user?.uid, 
-            ['deadline']: inputs['deadline'] ? new Date(inputs['deadline']) : new Date('9999-12-31T23:59:59.999999999Z'), 
-            ['category']: inputs['category'] === 'new' ? inputs['newCategory'] : inputs['category'], createdAt: new Date()}
+        if (inputs['category'] === 'none') {
+            taskData = {...taskData, 'categoryName': ''}
+            const taskRef = await addDoc(collection(db, `users/${user?.uid}/tasks/`), taskData)
 
-        const docRef = await addDoc(collection(db, 'users/'+user?.uid+'/tasks/'), taskData)
-        dispatch(addTasks({'id': docRef.id, 'data': taskData}))
-
-        if (inputs['category'] !== 'none') {
-            const catData = {title: inputs['newCategory'], description: '', color: inputs['color'], tasks: [docRef.id]}
-            const catRef = await addDoc(collection(db, 'users/'+user?.uid+'/categories/'), catData)
-            dispatch(addCategories({'id': catRef.id, 'data': catData}))
+            dispatch(addTasks({'id': taskRef.id, 'data': taskData}))
+            dispatch(addTaskDays({'id': taskRef.id, 'data': taskData}))
         }
+
+        else if (inputs['category'] === 'new') {
+            const i = categories.findIndex(e => e.data.title === inputs['categoryName'])
+            if (i > -1) {
+                const cat_id = categories[i].id;
+                taskData = {...taskData, 'category': cat_id}
+                const taskRef = await addDoc(collection(db, `users/${user?.uid}/tasks/`), taskData)
+                
+                updateDoc(doc(db, `users/${user?.uid}/categories/${cat_id}`), {
+                    tasks: arrayUnion(taskRef.id)
+                })
+
+                dispatch(addTasks({'id': taskRef.id, 'data': taskData}))
+                dispatch(addTaskDays({'id': taskRef.id, 'data': taskData}))
+                dispatch(addTaskToCategory({'catId': cat_id, 'taskId': taskRef.id}))
+            }
+            
+            else {
+                const catData = {title: inputs['categoryName'], description: '', color: inputs['color'], tasks: []}
+                const catRef = await addDoc(collection(db, `users/${user?.uid}/categories/`), catData)
+
+                taskData = {...taskData, 'category': catRef.id}
+                const taskRef = await addDoc(collection(db, `users/${user?.uid}/tasks/`), taskData)
+
+                await updateDoc(doc(db, `users/${user?.uid}/categories/${catRef.id}`), {
+                    tasks: arrayUnion(taskRef.id)            
+                })
+
+                dispatch(addTasks({'id': taskRef.id, 'data': taskData}))
+                dispatch(addTaskDays({'id': taskRef.id, 'data': taskData}))
+                dispatch(addCategories({'id': catRef.id, 'data': catData}))
+            }
+        }
+
+        else {
+            const i = categories.findIndex(e => e.id === inputs['category'])
+            const cat_id = categories[i].id;
+            taskData = {...taskData, 'category': cat_id}
+            const taskRef = await addDoc(collection(db, `users/${user?.uid}/tasks/`), taskData)
+            
+            updateDoc(doc(db, `users/${user?.uid}/categories/${cat_id}`), {
+                tasks: arrayUnion(taskRef.id)
+            })
+            
+            dispatch(addTasks({'id': taskRef.id, 'data': taskData}))
+            dispatch(addTaskDays({'id': taskRef.id, 'data': taskData}))
+            dispatch(addTaskToCategory({'catId': cat_id, 'taskId': taskRef.id}))
+        }
+
         setIsOpen(false)
     }
 
@@ -75,14 +122,14 @@ const TaskBtn = (props: Props) => {
                                 <option default value={'none'}>None</option>
                                 <option value={'new'}>New Category</option>
                                 {categories.map((category, i) => (
-                                    <option value={category.data.title} key={i}>{category.data.title}</option>
+                                    <option value={category.id} key={i}>{category.data.title}</option>
                                 ))}
                             </select>
                         </div>
                         {inputs['category'] === 'new' && (
                         <div>
-                            <label htmlFor='newCategory'>Category Name <span className='required'>*</span></label>
-                            <input name='newCategory' onChange={handleChange}/>
+                            <label htmlFor='categoryName'>Category Name <span className='required'>*</span></label>
+                            <input name='categoryName' onChange={handleChange}/>
                         </div>)}
                         <div>
                             <label htmlFor='color'>Color</label>

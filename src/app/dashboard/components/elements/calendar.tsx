@@ -1,21 +1,26 @@
 'use client'
 
-import { add, eachDayOfInterval, endOfMonth, endOfWeek, format, getDay, isEqual, isSameMonth, parse, startOfMonth, startOfToday, startOfWeek } from 'date-fns'
-import { MouseEvent, useState } from 'react'
+import { add, eachDayOfInterval, endOfMonth, endOfWeek, format, getDay, isEqual, isSameDay, isSameMonth, parse, startOfMonth, startOfToday, startOfWeek } from 'date-fns'
+import { useEffect, useState } from 'react'
 import {AiFillCaretDown} from 'react-icons/ai'
 import styles from '../topbar.module.scss';
 import Success from '@/assets/success.png'
 import Image from 'next/image';
-import {MdDoneOutline} from 'react-icons/md'
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store';
 type Props = {}
 
 const Calendar = (props: Props) => {
+    const tasks_days = useSelector((state: RootState) => state.task.tasks_days)
+    const categories = useSelector((state: RootState) => state.task.categories)
+    const init: any = []
     const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
     const today = startOfToday()
     const [selectedDay, setSelectedDay] = useState(today)
     const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'))
     const [isOpen, setIsOpen] = useState(false)
-    
+    const [taskOnSelectedDay, setTaskOnSelectedDay] = useState(init)
+
     let firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date())
     let newDays = eachDayOfInterval({ start: startOfWeek(firstDayCurrentMonth, {weekStartsOn: 1}), end: endOfWeek(endOfMonth(firstDayCurrentMonth), {weekStartsOn: 1})})
     
@@ -30,22 +35,22 @@ const Calendar = (props: Props) => {
     }
 
     const hasTasks = (date: Date) => {
+        if (date.toLocaleDateString() in tasks_days)
+            return true
         return false
     }
 
-    const finishTask = (e: MouseEvent<HTMLDivElement>) => {
-        console.log(e.currentTarget.id)
+    const handleSelection = (date: Date) => {
+        setSelectedDay(date)
+        if (date.toLocaleDateString() in tasks_days)
+            setTaskOnSelectedDay(tasks_days[date.toLocaleDateString() as keyof typeof tasks_days])
+        else
+            setTaskOnSelectedDay([])
     }
-
-    const tasks = [{'id': 1, 'title': 'Hehehehaw dsjakdb sad bsuadb sad bsaui dbas i', 'category': 'Grrrr', 'color': '#f45555'},
-                {'id': 2, 'title': 'Hehehehaw', 'category': 'Grrrr', 'color': '#f45555'},
-                {'id': 3, 'title': 'Hehehehaw', 'category': 'Grrrr', 'color': '#f45555'},
-                {'id': 4, 'title': 'Hehehehaw', 'category': 'Grrrr', 'color': '#f45555'},
-                {'id': 5, 'title': 'Hehehehaw', 'category': 'Grrrr', 'color': '#f45555'}]
 
     return (
         <>
-            <div className={`${styles['calendar-closed']} ${isOpen ? styles['calendar-top-open'] : ''}`} onClick={() => {setIsOpen(!isOpen); setCurrentMonth(format(today, 'MMM-yyyy')); setSelectedDay(today)}}>
+            <div className={`${styles['calendar-closed']} ${isOpen ? styles['calendar-top-open'] : ''}`} onClick={() => {setIsOpen(!isOpen); setCurrentMonth(format(today, 'MMM-yyyy')); handleSelection(today)}}>
                 <p>{format(today, "EEE, dd MMM")}</p>
                 <div><AiFillCaretDown size={24}></AiFillCaretDown></div>
             </div>
@@ -66,14 +71,16 @@ const Calendar = (props: Props) => {
                             {days.map((day, i) => (<button className='button-default no-hover' key={i}>{day}</button>))}
                         </div>
                         <div className={styles['dates']}>
-                            {newDays.map((day, dayIdx) => (
+                            {newDays.map((day) => (
                                 <div key={day.toString()} style={{'gridColumnStart': ((getDay(day) + 6) % 7) + 1}}>
                                     <button className={`button-default no-hover 
                                         ${isEqual(day, today) ? styles.today : ''} 
                                         ${isEqual(day, selectedDay) ? styles['selected-date'] : ''}
                                         ${hasTasks(day) ? styles['task-indicator'] : ''}
                                         ${isSameMonth(day, firstDayCurrentMonth) ? '' : styles['diff-month']}`} 
-                                        onClick={() => setSelectedDay(day)}
+                                        onClick={() => {
+                                            if (!isSameDay(selectedDay, day)) handleSelection(day)
+                                        }}
                                     >
                                         <time dateTime={format(day, 'yyyy-MM-dd')}>{format(day, 'dd')}</time>
                                     </button>
@@ -83,20 +90,30 @@ const Calendar = (props: Props) => {
                     </div>
 
                     <div className={styles['calendar-right']}>
-                        {tasks.length === 0 && (
+                        {taskOnSelectedDay.length === 0 && (
                             <div className={styles['tasks-empty']}>
                                 <Image src={Success} alt='success' width={320} height={320}></Image>
                                 <p>No tasks left!</p>
                             </div>
                         )}
                         <div className={styles['tasks']}>
-                            {tasks.length !== 0 && tasks.map((task) => (
-                                <div key={task['id']} className={styles['task-card']}>
-                                    <h4>{task['title']}</h4>
-                                    <p style={{'backgroundColor': task['color']}}>{task['category']}</p>
-                                    <div id={task['id'].toString()} onClick={finishTask}><MdDoneOutline size={24}></MdDoneOutline></div>
-                                </div>
-                            ))}
+                            {taskOnSelectedDay.length !== 0 && taskOnSelectedDay.map((task) => {
+                                if (!task.data.completed) {
+                                    const taskColor = task.data['color']
+                                    let catStyle = {}
+                                    
+                                    if (task.data['categoryName']) {
+                                        const i = categories.findIndex(e => e.id === task.data.category)
+                                        catStyle = {backgroundColor: categories[i].data.color}
+                                    }
+                                    
+                                    return (
+                                        <div key={task.id} className={styles['task-card']}>
+                                            <h4>{task.data['title']}</h4>
+                                            <p className={styles['category']} style={catStyle}>{task.data['categoryName']}</p>
+                                            <p className={`${styles['priority']} ${styles[task.data.priority]}`}>{task.data['priority']}</p>
+                                        </div>
+                            )}})}
                         </div>
                     </div>
                 </div>

@@ -6,6 +6,10 @@ const nextConfig = {
             'firebasestorage.googleapis.com',
             'lh3.googleusercontent.com'
         ]
+    },
+
+    experimental: {
+        serverActions: true,
     }
 }
 

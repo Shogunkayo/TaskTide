@@ -10,14 +10,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
 import Topbar from './components/topbar'
 import { collection, doc, getDoc, query, getDocs, onSnapshot, orderBy } from 'firebase/firestore'
-import { setCategories, setTasks } from '../redux/features/taskSlice'
+import { setCategories, setTaskDays, setTasks } from '../redux/features/taskSlice'
 
 type Props = {}
 
 const Dashboard = (props: Props) => {
     const active = useSelector((state: RootState) => state.view.active)
-    const tasks = useSelector((state: RootState) => state.task.tasks)
-    const categories = useSelector((state: RootState) => state.task.categories)
     const dispatch = useDispatch()
     const router = useRouter();
     const [user, loading, _] = useAuthState(auth)
@@ -42,6 +40,18 @@ const Dashboard = (props: Props) => {
             console.log(cats)
             dispatch(setTasks(tasks))
             dispatch(setCategories(cats))
+            
+            const temp: any = {}
+            for (let i=0; i < tasks.length; i++) {
+                let date = tasks[i].data.deadline.toDate().toLocaleDateString()
+                if (date in temp)
+                    temp[date].push(tasks[i])
+                else
+                    temp[date] = [tasks[i]]
+            }
+            console.log("Tasks: ", tasks)
+            console.log("Sorted by dates: ", temp)
+            dispatch(setTaskDays(temp))
         }
 
         if (!user && !loading) router.push("/");

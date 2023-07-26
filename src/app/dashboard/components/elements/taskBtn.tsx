@@ -5,7 +5,7 @@ import { IoClose } from 'react-icons/io5'
 import styles from '../topbar.module.scss'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-import { addDoc, arrayUnion, collection, doc, setDoc, updateDoc } from 'firebase/firestore'
+import { addDoc, arrayUnion, collection, doc, updateDoc } from 'firebase/firestore'
 import { auth, db } from '@/app/auth/firebase'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/app/redux/store'
@@ -17,7 +17,7 @@ type Props = {}
 const TaskBtn = (props: Props) => {
     const categories = useSelector((state: RootState) => state.task.categories)
     const dispatch = useDispatch()
-    const [user, loading, _] = useAuthState(auth)
+    const [user, _, __] = useAuthState(auth)
     const [isOpen, setIsOpen] = useState(false);
     const initialState = {'title': '', 'description': '', 'color': '#000000', 'category': 'none', 'deadline': '', 'categoryName': '', 'priority': 'low'}
     const [inputs, setInputs] = useState(initialState);
@@ -43,9 +43,17 @@ const TaskBtn = (props: Props) => {
         }
 
         else if (inputs['category'] === 'new') {
-            const i = categories.findIndex(e => e.data.title === inputs['categoryName'])
-            if (i > -1) {
-                const cat_id = categories[i].id;
+            let duplicate = false;
+            let cat_id;
+            for (const category in categories) {
+                if (categories[category].title === inputs['categoryName']) {
+                    duplicate = true;
+                    cat_id = category;
+                    break;
+                }
+            }
+
+            if (duplicate && cat_id) {
                 taskData = {...taskData, 'category': cat_id}
                 const taskRef = await addDoc(collection(db, `users/${user?.uid}/tasks/`), taskData)
                 
@@ -76,18 +84,16 @@ const TaskBtn = (props: Props) => {
         }
 
         else {
-            const i = categories.findIndex(e => e.id === inputs['category'])
-            const cat_id = categories[i].id;
-            taskData = {...taskData, 'category': cat_id}
+            taskData = {...taskData, 'categoryName': categories[inputs['category']].title}
             const taskRef = await addDoc(collection(db, `users/${user?.uid}/tasks/`), taskData)
             
-            updateDoc(doc(db, `users/${user?.uid}/categories/${cat_id}`), {
+            updateDoc(doc(db, `users/${user?.uid}/categories/${inputs['category']}`), {
                 tasks: arrayUnion(taskRef.id)
             })
             
             dispatch(addTasks({'id': taskRef.id, 'data': taskData}))
             dispatch(addTaskDays({'id': taskRef.id, 'data': taskData}))
-            dispatch(addTaskToCategory({'catId': cat_id, 'taskId': taskRef.id}))
+            dispatch(addTaskToCategory({'catId': inputs['category'], 'taskId': taskRef.id}))
         }
 
         setIsOpen(false)
@@ -121,9 +127,11 @@ const TaskBtn = (props: Props) => {
                             <select onChange={handleChange} name='category'>
                                 <option default value={'none'}>None</option>
                                 <option value={'new'}>New Category</option>
-                                {categories.map((category, i) => (
-                                    <option value={category.id} key={i}>{category.data.title}</option>
-                                ))}
+                                {
+                                    Object.keys(categories).map((category) => (
+                                        <option value={category} key={category}>{categories[category].title}</option>
+                                    ))
+                                }
                             </select>
                         </div>
                         {inputs['category'] === 'new' && (

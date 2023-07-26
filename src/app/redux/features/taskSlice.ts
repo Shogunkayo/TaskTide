@@ -2,16 +2,37 @@
 
 import { createSlice } from "@reduxjs/toolkit"
 
+export interface i_Task {
+    completed: boolean,
+    isSingle: boolean,
+    category: string | null,
+    taskOf: string,
+    color: string,
+    title: string,
+    description: string | null,
+    categoryName: string,
+    priority: string,
+    createdAt: any,
+    deadline: any
+}
+
+export interface i_Category {
+    title: string,
+    description: string | null,
+    tasks: Array<string>
+    color: string
+}
+
 export interface TaskState {
-    tasks: any[],
-    tasks_days: {},
-    categories: any[]
+    tasks: {[key: string]: i_Task},
+    tasks_days: {[key: string]: {id: string, data: i_Task}},
+    categories: {[key: string]: i_Category}
 }
 
 const initialState: TaskState = {
-    tasks: [],
+    tasks: {},
     tasks_days: {},
-    categories: []
+    categories: {}
 }
 
 export const taskSlice = createSlice({
@@ -19,7 +40,7 @@ export const taskSlice = createSlice({
     initialState,
     reducers: {
         setTasks: (state, action) => {state.tasks = action.payload},
-        addTasks: (state, action) => {state.tasks = [...state.tasks, action.payload]},
+        addTasks: (state, action) => {state.tasks = {...state.tasks, [action.payload.id]: action.payload.data}},
         
         setTaskDays: (state, action) => {state.tasks_days = action.payload},
         addTaskDays: (state, action) => {
@@ -33,12 +54,12 @@ export const taskSlice = createSlice({
         },
 
         setCategories: (state, action) => {state.categories = action.payload},
-        addCategories: (state, action) => {state.categories = [...state.categories, action.payload]},
+        addCategories: (state, action) => {state.categories = {...state.categories, [action.payload.id]: action.payload.data}},
     
         addTaskToCategory: (state, action) => {
-            let temp:any = state.categories
-            const i = temp.findIndex(e => e.id === action.payload.catId)
-            temp[i].data.tasks.push(action.payload.taskId)
+            state.categories = {...state.categories, [action.payload.catId]: {
+                ...state.categories[action.payload.catId], 
+                'tasks': [...state.categories[action.payload.catId].tasks, action.payload.taskId]}}
         }
     }
 })

@@ -6,12 +6,13 @@ import viewReducer from './features/viewSlice';
 import taskReducer from './features/taskSlice';
 
 export const store = configureStore({
+    devTools: true,
     reducer: {
         auth: authReducer,
         view: viewReducer,
         task: taskReducer
-    }
-})
+    },
+});
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch

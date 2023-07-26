@@ -32,44 +32,9 @@ export default function Home() {
                     Our intuitive and feature-packed to-do app combines the power of a <span className='highlight-invert'><b> kanban board </b></span> and 
                     <span className='highlight-invert'><b> graph views </b></span> to revolutionize your task management experience.</p>
                 </div>
-
-
             </main>
 
             <div id='features'>
-                <div className='features-hero'>
-                    <Image src={Kanban} alt='kanban' width={640} height={640}></Image>
-                </div>
-                <div className='features'>
-                    <div>
-                        <h3 className='highlight-invert'>Kanban Board</h3>
-                        <p>Seamlessly organize and prioritize tasks with our intuitive drag-and-drop interface. Customize columns, add labels, 
-                        and assign due dates to streamline your workflow.
-                        </p>
-                    </div>
-
-                    <div>
-                        <h3 className='highlight-invert'>Graph View</h3>
-                        <p>Gain a deeper understanding of your task management with visually appealing graphs. Track completion rates, 
-                        identify peak productivity periods, and optimize your time for maximum efficiency.
-                        </p>
-                    </div>
-
-                    <div>
-                        <h3 className='highlight-invert'>Collaborative Workspace</h3>
-                        <p>Collaborative Workspace: Share boards and tasks with colleagues, friends, or family members. Enjoy real-time collaboration and keep everyone 
-                        in sync to achieve your common goals.
-                        </p>
-                    </div>
-                    
-                    <div>
-                        <h3 className='highlight-invert'>Reminders</h3>
-                        <p>
-                        Reminders and Notifications: Stay on track with reminders. Never miss a deadline or forget an important task again.
-                        </p>
-                    </div>
-                </div>
-
             </div>
 
             <div id='pricing'>

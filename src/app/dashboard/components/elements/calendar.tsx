@@ -103,8 +103,7 @@ const Calendar = (props: Props) => {
                                     let catStyle = {}
                                     
                                     if (task.data['categoryName']) {
-                                        const i = categories.findIndex(e => e.id === task.data.category)
-                                        catStyle = {backgroundColor: categories[i].data.color}
+                                        catStyle = {backgroundColor: categories[task.data.category].color}
                                     }
                                     
                                     return (

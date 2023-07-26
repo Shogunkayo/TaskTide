@@ -25,7 +25,6 @@ const Sidebar = (props: Props) => {
     const router = useRouter();
     const [signout, loading, error] = useSignOut(auth);
     const [isOpen, setIsOpen] = useState(false)
-    const [isActive, setIsActive] = useState({0: false, 1: false, 2: false, 3: false, 4: false, 5: false, 6: false})
 
     const iconSize = 24;
 
@@ -51,7 +50,7 @@ const Sidebar = (props: Props) => {
 
             <div className={styles.content}>
                 {contents.map((content, i) => (
-                    <div key={i} id={i.toString()} className={`${props.active === i ? styles.active : ''}`} onClick={() => dispatch(changeView(i))}>
+                    <div key={i} id={i.toString()} className={`${props.active === i ? styles.active : styles.inactive} }`} onClick={() => dispatch(changeView(i))}>
                         <div>{content['icon']}</div>
                         {isOpen && <p>{content['p']}</p>}
                     </div>

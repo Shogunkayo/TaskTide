@@ -11,6 +11,7 @@ import { RootState } from '../redux/store'
 import Topbar from './components/topbar'
 import { collection, doc, getDoc, query, getDocs, onSnapshot, orderBy } from 'firebase/firestore'
 import { setCategories, setTaskDays, setTasks } from '../redux/features/taskSlice'
+import Tasklist from './components/tasklist'
 
 type Props = {}
 
@@ -19,6 +20,7 @@ const Dashboard = (props: Props) => {
     const dispatch = useDispatch()
     const router = useRouter();
     const [user, loading, _] = useAuthState(auth)
+    const view = useSelector((state: RootState) => state.view.active)
 
     useEffect(() => {
 
@@ -28,29 +30,25 @@ const Dashboard = (props: Props) => {
             const taskSnap = await getDocs(taskRef)
             const catSnap = await getDocs(catRef)
 
-            const tasks: any[] = []
-            const cats: any[] = []
+            const tasks: any = {}
+            const cats: any = {}
             taskSnap.forEach((doc) => {
-                tasks.push({id: doc.id, data: doc.data()}) 
+                tasks[doc.id] = doc.data() 
             })
             catSnap.forEach((doc) => {
-                cats.push({id: doc.id, data: doc.data()})
+                cats[doc.id] = doc.data()
             })
-            console.log(tasks)
-            console.log(cats)
             dispatch(setTasks(tasks))
             dispatch(setCategories(cats))
             
             const temp: any = {}
-            for (let i=0; i < tasks.length; i++) {
-                let date = tasks[i].data.deadline.toDate().toLocaleDateString()
+            for (const task in tasks) {
+                let date = tasks[task].deadline.toDate().toLocaleDateString()
                 if (date in temp)
-                    temp[date].push(tasks[i])
+                    temp[date].push({id: task, data: tasks[task]})
                 else
-                    temp[date] = [tasks[i]]
+                    temp[date] = [{id: task, data: tasks[task]}]
             }
-            console.log("Tasks: ", tasks)
-            console.log("Sorted by dates: ", temp)
             dispatch(setTaskDays(temp))
         }
 
@@ -58,15 +56,6 @@ const Dashboard = (props: Props) => {
         if (user) fetchData();
     }, [user, router, loading])
    
-    /*
-    const unsub = onSnapshot(query(collection(db, `users/${user?.uid}/tasks`)), (querySnapshot) => {
-        const tasks: any[] = [];
-        querySnapshot.forEach((doc) => {
-            tasks.push(doc.data())
-        })
-        console.log("Current tasks: ", tasks)
-    })
-    */
     if (loading) {
         return (
             <div>
@@ -82,6 +71,9 @@ const Dashboard = (props: Props) => {
             </div>
             <div className={styles['sidebar-container']}>
                 <Sidebar active={active}></Sidebar>
+            </div>
+            <div className={styles['content-container']}>
+                {view === 1 && <Tasklist></Tasklist>}
             </div>
         </div>
     )

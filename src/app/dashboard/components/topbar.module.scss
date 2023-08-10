@@ -308,3 +308,21 @@
         }
     }
 }
+
+.color-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    transform: translateX(90px);
+}
+
+.color-picker {
+    width: 40px;
+    height: 40px;
+    margin: 3px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.color-selected {
+    outline: 3px solid c.$primary;
+}

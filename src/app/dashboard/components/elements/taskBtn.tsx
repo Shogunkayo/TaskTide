@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/app/redux/store'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { addCategories, addTaskDays, addTaskToCategory, addTasks } from '@/app/redux/features/taskSlice'
+import { Timestamp } from 'firebase/firestore'
 
 type Props = {}
 
@@ -19,8 +20,10 @@ const TaskBtn = (props: Props) => {
     const dispatch = useDispatch()
     const [user, _, __] = useAuthState(auth)
     const [isOpen, setIsOpen] = useState(false);
-    const initialState = {'title': '', 'description': '', 'color': '#000000', 'category': 'none', 'deadline': '', 'categoryName': '', 'priority': 'low'}
+    const initialState = {'title': '', 'description': '', 'color': '#d8dee9', 'category': 'none', 'deadline': '', 'categoryName': '', 'priority': 'low'}
     const [inputs, setInputs] = useState(initialState);
+
+    const colors = ['#d8dee9', '#f2cdcd', '#f38ba8', '#fab387', '#a6e3a1', '#94e2d5', '#8fbcbb', '#7dc4e4', '#89b4fa', '#b4befe']
 
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLTextAreaElement>) => {
         setInputs((prev) => ({...prev, [e.target.name]: e.target.value}))
@@ -32,7 +35,7 @@ const TaskBtn = (props: Props) => {
             return toast.error("Please fill all required fields", {position: 'top-center', autoClose:3000, theme:'dark'})
         
         let taskData = {...inputs, completed: false, isSingle: inputs['category'] === 'none' ? true : false, taskOf: user?.uid, 
-            ['deadline']: inputs['deadline'] ? new Date(inputs['deadline']) : new Date('9999-12-31T23:59:59.999999999Z'), createdAt: new Date()}
+            ['deadline']: inputs['deadline'] ? Timestamp.fromDate(new Date(inputs['deadline'])) : Timestamp.fromDate(new Date('9999-12-31T23:59:59.999999999Z')), createdAt: new Date()}
 
         if (inputs['category'] === 'none') {
             taskData = {...taskData, 'categoryName': ''}
@@ -72,14 +75,14 @@ const TaskBtn = (props: Props) => {
 
                 taskData = {...taskData, 'category': catRef.id}
                 const taskRef = await addDoc(collection(db, `users/${user?.uid}/tasks/`), taskData)
-
+                
                 await updateDoc(doc(db, `users/${user?.uid}/categories/${catRef.id}`), {
                     tasks: arrayUnion(taskRef.id)            
                 })
 
                 dispatch(addTasks({'id': taskRef.id, 'data': taskData}))
                 dispatch(addTaskDays({'id': taskRef.id, 'data': taskData}))
-                dispatch(addCategories({'id': catRef.id, 'data': catData}))
+                dispatch(addCategories({'id': catRef.id, 'data': {...catData, 'tasks': [taskRef.id]}}))
             }
         }
 
@@ -141,7 +144,14 @@ const TaskBtn = (props: Props) => {
                         </div>)}
                         <div>
                             <label htmlFor='color'>Color</label>
-                            <input type='color' name='color' onChange={handleChange}/>
+                            <div className={styles['color-container']}>
+                            {colors.map((color) => (
+                                <div key={color} style={{'backgroundColor': color}} 
+                                    className={`${styles['color-picker']} ${inputs['color'] === color ? styles['color-selected'] : ''}`}
+                                    onClick={() => setInputs((prev) => ({...prev, ['color']: color}))}
+                                ></div>
+                            ))}
+                            </div>
                         </div>
                         <div>
                             <label htmlFor='deadline'>Deadline</label>

@@ -45,7 +45,7 @@ export const taskSlice = createSlice({
         setTaskDays: (state, action) => {state.tasks_days = action.payload},
         addTaskDays: (state, action) => {
             let temp:any = state.tasks_days
-            const date = action.payload.data.deadline.toLocaleDateString()
+            const date = action.payload.data.deadline.toDate().toLocaleDateString()
             if (date in temp)
                 temp[date].push(action.payload)
             else

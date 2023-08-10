@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation'
 import styles from './sidebar.module.scss'
 import { useDispatch, useSelector} from 'react-redux'
 import { changeView } from '@/app/redux/features/viewSlice'
+import { setUser } from '@/app/redux/features/authSlice'
 
 type Props = {
     active: number
@@ -65,7 +66,7 @@ const Sidebar = (props: Props) => {
                 </>}
             </div>
 
-            <div onClick={() => {signout(); router.push('/')}} className={styles.logout}>
+            <div onClick={() => {signout(); dispatch(setUser(null)); router.push('/')}} className={styles.logout}>
                 <hr></hr>
                 <div><RiLogoutBoxFill size={32}></RiLogoutBoxFill></div>
                 {isOpen && <p>Logout</p>}

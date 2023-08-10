@@ -6,7 +6,7 @@ import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { auth } from './firebase'
 import { toast } from 'react-toastify'
-import { changeType, setUser } from '../redux/features/authSlice'
+import { changeOpen, changeType, setUser } from '../redux/features/authSlice'
 import GoogleBtn from '../components/buttons/google'
 import { RootState } from '../redux/store'
 
@@ -48,9 +48,15 @@ const Signup = (props: Props) => {
     }
 
     useEffect(() => {
-        if (uid) return router.push('/creation') 
+        const handleCreation = () => {
+            console.log(uid)
+            dispatch(changeOpen(false))
+            router.push('/creation')
+        }
+
+        if (uid) return handleCreation() 
         if (error) toast.error(error.message, {position: "top-center", autoClose: 3000, theme: "dark"})            
-    }, [error])
+    }, [error, uid, dispatch, router])
 
     return (
         <form onSubmit={handleSubmit}>

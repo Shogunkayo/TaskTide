@@ -1,0 +1,56 @@
+@use '@/styles/colors' as c;
+
+.tasklist-container {
+    background: c.$bg;
+    nav {
+        display: flex;
+
+        button {
+            margin: 0px 5px;
+        }
+    }
+}
+
+.task-container {
+    padding: 20px;
+    height: 700px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.task {
+    border-radius: 20px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.task-title {
+    color: c.$bg;
+    font-size: 1.2rem;
+}
+
+.task-inner {
+    box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+}
+
+.task-category {
+
+}
+
+.task-desc {
+
+}
+
+.task-prty {
+
+}
+
+.task-ddln {
+
+}
+
+.task-done {
+
+}

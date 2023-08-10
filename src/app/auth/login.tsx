@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
 import { auth } from './firebase'
 import { toast } from 'react-toastify'
-import { changeType, setUser } from '../redux/features/authSlice'
+import { changeOpen, changeType, setUser } from '../redux/features/authSlice'
 import GoogleBtn from '../components/buttons/google'
 
 type Props = {}
@@ -40,6 +40,7 @@ const Login = (props: Props) => {
                 router.push('/creation')
             }
             else {
+                dispatch(changeOpen(false))
                 router.push('/dashboard')
             }
 

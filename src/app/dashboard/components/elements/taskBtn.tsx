@@ -1,6 +1,6 @@
 'use client'
 
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { IoClose } from 'react-icons/io5'
 import styles from '../topbar.module.scss'
 import { ToastContainer, toast } from 'react-toastify'
@@ -16,6 +16,7 @@ import { Timestamp } from 'firebase/firestore'
 type Props = {}
 
 const TaskBtn = (props: Props) => {
+    const [catChange, triggerCatChange] = useState('none')
     const categories = useSelector((state: RootState) => state.task.categories)
     const dispatch = useDispatch()
     const [user, _, __] = useAuthState(auth)
@@ -26,8 +27,17 @@ const TaskBtn = (props: Props) => {
     const colors = ['#d8dee9', '#f2cdcd', '#f38ba8', '#fab387', '#a6e3a1', '#94e2d5', '#8fbcbb', '#7dc4e4', '#89b4fa', '#b4befe']
 
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLTextAreaElement>) => {
-        setInputs((prev) => ({...prev, [e.target.name]: e.target.value}))
+        setInputs({...inputs, [e.target.name]: e.target.value})
+        if (e.target.name === 'category' && e.target.value !== 'none' && e.target.value !== 'new') {
+            triggerCatChange(e.target.value)
+        }
     }
+
+    useEffect(() => {
+        if (catChange !== 'none' && catChange !== 'new') {
+            setInputs((prev) => ({...prev, ['color']: categories[inputs['category']].color}))
+        }
+    }, [catChange])
 
     const createNewTask = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();

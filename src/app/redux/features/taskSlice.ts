@@ -1,6 +1,8 @@
 'use client'
 
+import { db } from "@/app/auth/firebase"
 import { createSlice } from "@reduxjs/toolkit"
+import { collection, getDocs, orderBy, query } from "firebase/firestore"
 
 export interface i_Task {
     completed: boolean,
@@ -35,6 +37,36 @@ const initialState: TaskState = {
     categories: {}
 }
 
+export const fetchTasksAndCategories = async (userId: string) => {
+    const taskRef = query(collection(db, `users/${userId}/tasks`), orderBy('deadline'), orderBy('category'), orderBy('priority'), orderBy('createdAt'))
+    const catRef = query(collection(db, `users/${userId}/categories`), orderBy('tasks'))
+    const taskSnap = await getDocs(taskRef)
+    const catSnap = await getDocs(catRef)
+
+    const tasks: any = {}
+    const cats: any = {}
+    taskSnap.forEach((doc) => {
+        tasks[doc.id] = doc.data() 
+    })
+    catSnap.forEach((doc) => {
+        cats[doc.id] = doc.data()
+    })
+
+    return [tasks, cats]
+}
+
+export const newTaskDays = (tasks: {[key: string]: i_Task}) => {
+    const temp: any = {}
+    for (const task in tasks) {
+        let date = tasks[task].deadline.toDate().toLocaleDateString()
+        if (date in temp)
+            temp[date].push({id: task, data: tasks[task]})
+        else
+            temp[date] = [{id: task, data: tasks[task]}]
+    }
+    return temp
+}
+
 export const taskSlice = createSlice({
     name: 'task',
     initialState,
@@ -60,10 +92,19 @@ export const taskSlice = createSlice({
             state.categories = {...state.categories, [action.payload.catId]: {
                 ...state.categories[action.payload.catId], 
                 'tasks': [...state.categories[action.payload.catId].tasks, action.payload.taskId]}}
+        },
+        
+        completeTask: (state, action) => {
+            state.tasks = {...state.tasks, [action.payload.taskId]: {
+                ...state.tasks[action.payload.taskId],
+                'completed': true
+            }}
+
+            state.tasks_days = newTaskDays(state.tasks)
         }
     }
 })
 
 export const {addTasks, addCategories, addTaskDays, 
-    setTasks, setCategories, setTaskDays, addTaskToCategory} = taskSlice.actions
+    setTasks, setCategories, setTaskDays, addTaskToCategory, completeTask} = taskSlice.actions
 export default taskSlice.reducer

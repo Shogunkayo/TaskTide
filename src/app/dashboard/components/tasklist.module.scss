@@ -1,7 +1,6 @@
 @use '@/styles/colors' as c;
 
 .tasklist-container {
-    background: c.$bg;
     nav {
         display: flex;
 
@@ -11,46 +10,159 @@
     }
 }
 
+.low {
+    background-color: c.$low;
+    color: darken($color: c.$low, $amount: 30)
+}
+
+.medium {
+    background-color: c.$medium;
+    color: darken($color: c.$medium, $amount: 30)
+}
+
+.high {
+    background-color: c.$high;
+    color: darken($color: c.$high, $amount: 30)
+}
+
 .task-container {
     padding: 20px;
     height: 700px;
     overflow-y: auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    background: c.$primary;
+    border-radius: 10px;
+    margin-top: 20px;
 }
 
 .task {
+    height: 400px;
+    position: relative;
     border-radius: 20px;
     padding: 10px;
     margin: 10px;
+    background: c.$bg;
+    width: 90%;
+    border: 4px solid c.$accent;
 }
 
 .task-title {
-    color: c.$bg;
     font-size: 1.2rem;
+    padding: 10px;
 }
 
-.task-inner {
-    box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.8);
-    border-radius: 20px;
+.task-foot {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 10px;
+    padding: 20px;
+    position: absolute;
+    bottom: 10px;
+    width: 90%; 
 }
 
 .task-category {
-
+    padding: 15px;
+    border-radius: 10px;
 }
 
 .task-desc {
-
+    position: relative;
+    top: 50px;
+    overflow-y: auto;
+    width: 80%;
+    height: 150px;
+    margin: 0 auto;
+    background: lighten($color: c.$secondary, $amount: 10);
+    border-radius: 20px;
+    padding: 10px;
 }
 
 .task-prty {
-
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
 }
 
 .task-ddln {
+    color: darken($color: c.$secondary, $amount: 20);
+    position: absolute;
+    right: 0;
+    padding: 10px 20px;
+    font-style: italic;
+}
 
+.task-done-btn {
+    border: none;
+    position: absolute;
+    bottom: 22px;
+    right: 40px;
+    background-color: c.$primary;
+    color: c.$bg;
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: c.$accent;
+    }
+}
+
+.task-delete {
+    border: none;
+    position: absolute;
+    background: none;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
 }
 
 .task-done {
+    border: none;
+    opacity: 0.8;
+}
 
+.delete-container {
+    z-index: 50;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top:0;
+    left:0;
+    background: transparentize($color: c.$black, $amount: 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    >div {
+        background: c.$bg;
+        border-radius: 20px;
+        width: 35%;
+
+        p {
+            padding: 20px;
+            font-size: 1.2rem;
+        }
+
+        span {
+            color: c.$high;
+        }
+    }
+}
+
+.delete-btn {
+    background-color: c.$high;
+}
+
+.delete-foot {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    transform: translateY(-20px);
+
+    >button {
+        margin: 0 20px;
+    }
 }

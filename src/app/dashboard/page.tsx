@@ -4,13 +4,12 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import Sidebar from './components/sidebar'
 import styles from './dashboard.module.scss'
 import { useRouter } from 'next/navigation'
-import { auth, db } from '../auth/firebase'
-import { useEffect, useState } from 'react'
+import { auth } from '../auth/firebase'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
 import Topbar from './components/topbar'
-import { collection, doc, getDoc, query, getDocs, onSnapshot, orderBy } from 'firebase/firestore'
-import { setCategories, setTaskDays, setTasks } from '../redux/features/taskSlice'
+import { fetchTasksAndCategories, newTaskDays, setCategories, setTaskDays, setTasks } from '../redux/features/taskSlice'
 import Tasklist from './components/tasklist'
 
 type Props = {}
@@ -23,33 +22,12 @@ const Dashboard = (props: Props) => {
     const view = useSelector((state: RootState) => state.view.active)
 
     useEffect(() => {
-
         const fetchData = async () => {
-            const taskRef = query(collection(db, `users/${user?.uid}/tasks`), orderBy('deadline'), orderBy('category'), orderBy('priority'), orderBy('createdAt'))
-            const catRef = query(collection(db, `users/${user?.uid}/categories`))
-            const taskSnap = await getDocs(taskRef)
-            const catSnap = await getDocs(catRef)
-
-            const tasks: any = {}
-            const cats: any = {}
-            taskSnap.forEach((doc) => {
-                tasks[doc.id] = doc.data() 
-            })
-            catSnap.forEach((doc) => {
-                cats[doc.id] = doc.data()
-            })
+            if (!user?.uid) return
+            const [tasks, cats] = await fetchTasksAndCategories(user?.uid)
             dispatch(setTasks(tasks))
             dispatch(setCategories(cats))
-            
-            const temp: any = {}
-            for (const task in tasks) {
-                let date = tasks[task].deadline.toDate().toLocaleDateString()
-                if (date in temp)
-                    temp[date].push({id: task, data: tasks[task]})
-                else
-                    temp[date] = [{id: task, data: tasks[task]}]
-            }
-            dispatch(setTaskDays(temp))
+            dispatch(setTaskDays(newTaskDays(tasks)))
         }
 
         if (!user && !loading) router.push("/");

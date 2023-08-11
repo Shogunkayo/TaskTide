@@ -1,7 +1,7 @@
 'use client'
 
 import { add, eachDayOfInterval, endOfMonth, endOfWeek, format, getDay, isEqual, isSameDay, isSameMonth, parse, startOfMonth, startOfToday, startOfWeek } from 'date-fns'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {AiFillCaretDown} from 'react-icons/ai'
 import styles from '../topbar.module.scss';
 import Success from '@/assets/success.png'
@@ -35,8 +35,14 @@ const Calendar = (props: Props) => {
     }
 
     const hasTasks = (date: Date) => {
-        if (date.toLocaleDateString() in tasks_days)
-            return true
+        if (date.toLocaleDateString() in tasks_days){
+            let flag = false
+            for (let i=0; i<tasks_days[date.toLocaleDateString()].length; i++) {
+                if (!tasks_days[date.toLocaleDateString()][i]['data'].completed)
+                    flag = true
+            }
+            return flag
+        }
         return false
     }
 
@@ -46,6 +52,21 @@ const Calendar = (props: Props) => {
             setTaskOnSelectedDay(tasks_days[date.toLocaleDateString() as keyof typeof tasks_days])
         else
             setTaskOnSelectedDay([])
+    }
+
+    const checkTaskOnSelectedDay = () => {
+        /*
+            Returns true if all tasks have been completed
+         */
+        if (!taskOnSelectedDay || taskOnSelectedDay.length === 0) return
+        let flag = true
+        for (let i=0; i<setTaskOnSelectedDay.length; i++) {
+            if (taskOnSelectedDay[i]['data'].completed === false) {
+                flag = false
+                break
+            }
+        }
+        return flag
     }
 
     return (
@@ -90,7 +111,7 @@ const Calendar = (props: Props) => {
                     </div>
 
                     <div className={styles['calendar-right']}>
-                        {taskOnSelectedDay.length === 0 && (
+                        {(taskOnSelectedDay.length === 0 || checkTaskOnSelectedDay()) && (
                             <div className={styles['tasks-empty']}>
                                 <Image src={Success} alt='success' width={320} height={320}></Image>
                                 <p>No tasks left!</p>
@@ -99,7 +120,6 @@ const Calendar = (props: Props) => {
                         <div className={styles['tasks']}>
                             {taskOnSelectedDay.length !== 0 && taskOnSelectedDay.map((task) => {
                                 if (!task.data.completed) {
-                                    const taskColor = task.data['color']
                                     let catStyle = {}
                                     
                                     if (task.data['categoryName']) {

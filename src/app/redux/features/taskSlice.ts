@@ -7,13 +7,13 @@ import { collection, getDocs, orderBy, query } from "firebase/firestore"
 export interface i_Task {
     completed: boolean,
     isSingle: boolean,
-    category: string | null,
+    category: string,
     taskOf: string,
     color: string,
     title: string,
-    description: string | null,
+    description: string,
     categoryName: string,
-    priority: string,
+    priority: number,
     createdAt: any,
     deadline: any
 }
@@ -37,9 +37,15 @@ const initialState: TaskState = {
     categories: {}
 }
 
+export const priorityMap: {[key: number]: string} = {
+    0: 'High',
+    1: 'Medium',
+    2: 'Low'
+}
+
 export const fetchTasksAndCategories = async (userId: string) => {
     const taskRef = query(collection(db, `users/${userId}/tasks`), orderBy('deadline'), orderBy('category'), orderBy('priority'), orderBy('createdAt'))
-    const catRef = query(collection(db, `users/${userId}/categories`), orderBy('tasks'))
+    const catRef = query(collection(db, `users/${userId}/categories`), orderBy('title'))
     const taskSnap = await getDocs(taskRef)
     const catSnap = await getDocs(catRef)
 

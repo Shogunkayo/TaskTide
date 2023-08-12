@@ -21,10 +21,10 @@ const TaskBtn = (props: Props) => {
     const dispatch = useDispatch()
     const [user, _, __] = useAuthState(auth)
     const [isOpen, setIsOpen] = useState(false);
-    const initialState = {'title': '', 'description': '', 'color': '#d8dee9', 'category': 'none', 'deadline': '', 'categoryName': '', 'priority': 'low'}
+    const initialState = {'title': '', 'description': '', 'color': '#d8dee9', 'category': 'none', 'deadline': '', 'categoryName': '', 'priority': 2}
     const [inputs, setInputs] = useState(initialState);
 
-    const colors = ['#d8dee9', '#f2cdcd', '#f38ba8', '#fab387', '#a6e3a1', '#94e2d5', '#8fbcbb', '#7dc4e4', '#89b4fa', '#b4befe']
+    const colors = ['#d8dee9', '#f2cdcd', '#e98b98', '#fab387', '#a6e3a1', '#94e2d5', '#8fbcbb', '#7dc4e4', '#89b4fa', '#b4befe']
 
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLTextAreaElement>) => {
         setInputs({...inputs, [e.target.name]: e.target.value})
@@ -45,7 +45,8 @@ const TaskBtn = (props: Props) => {
             return toast.error("Please fill all required fields", {position: 'top-center', autoClose:3000, theme:'dark'})
         
         let taskData = {...inputs, completed: false, isSingle: inputs['category'] === 'none' ? true : false, taskOf: user?.uid, 
-            ['deadline']: inputs['deadline'] ? Timestamp.fromDate(new Date(inputs['deadline'])) : Timestamp.fromDate(new Date('9999-12-31T23:59:59.999999999Z')), createdAt: new Date()}
+            ['deadline']: inputs['deadline'] ? Timestamp.fromDate(new Date(inputs['deadline'])) : Timestamp.fromDate(new Date('9999-12-31T23:59:59.999999999Z')), createdAt: Timestamp.fromDate(new Date())}
+
 
         if (inputs['category'] === 'none') {
             taskData = {...taskData, 'categoryName': ''}
@@ -130,9 +131,9 @@ const TaskBtn = (props: Props) => {
                         <div>
                             <label htmlFor='priority'>Priority </label>
                             <select onChange={handleChange} name='priority'>
-                                <option default value={'low'}>Low</option>
-                                <option value={'medium'}>Medium</option>
-                                <option value={'high'}>High</option>
+                                <option default value={2}>Low</option>
+                                <option value={1}>Medium</option>
+                                <option value={0}>High</option>
                             </select>
                         </div>
                         <div>

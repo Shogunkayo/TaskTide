@@ -10,17 +10,17 @@
     }
 }
 
-.low {
+.Low {
     background-color: c.$low;
     color: darken($color: c.$low, $amount: 30)
 }
 
-.medium {
+.Medium {
     background-color: c.$medium;
     color: darken($color: c.$medium, $amount: 30)
 }
 
-.high {
+.High {
     background-color: c.$high;
     color: darken($color: c.$high, $amount: 30)
 }
@@ -32,9 +32,11 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto;
-    background: c.$primary;
+    background: c.$bg;
     border-radius: 10px;
     margin-top: 20px;
+    box-shadow: 0 0 10px 3px c.$primary;
+    background: c.$primary;
 }
 
 .task {
@@ -43,9 +45,12 @@
     border-radius: 20px;
     padding: 10px;
     margin: 10px;
-    background: c.$bg;
     width: 90%;
-    border: 4px solid c.$accent;
+    background: c.$bg;
+
+    &:hover {
+        transform: translate(-5px, -10px);
+    }
 }
 
 .task-title {
@@ -99,24 +104,15 @@
     position: absolute;
     bottom: 22px;
     right: 40px;
-    background-color: c.$primary;
-    color: c.$bg;
+    background-color: c.$bg;
     padding: 15px;
     border-radius: 10px;
     cursor: pointer;
 
     &:hover {
-        background-color: c.$accent;
+        background-color: c.$primary;
+        color: c.$bg;
     }
-}
-
-.task-delete {
-    border: none;
-    position: absolute;
-    background: none;
-    right: 10px;
-    top: 10px;
-    cursor: pointer;
 }
 
 .task-done {
@@ -165,4 +161,150 @@
     >button {
         margin: 0 20px;
     }
+}
+
+.task-view-container {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    background: transparentize($color: c.$black, $amount: 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    >div {
+        width: 50%;
+        background: c.$bg;
+        border-radius: 10px;
+        position: relative;
+        height: 600px;
+    }
+}
+
+.task-view-title {
+    margin: 0 auto;
+    width: fit-content;
+    padding: 20px;
+}
+
+.task-view-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.task-view-ddln {
+    color: darken($color: c.$secondary, $amount: 20);
+    padding: 10px 20px;
+    font-style: italic;
+}
+
+.task-view-desc {
+    position: relative;
+    top: 30px;
+    width: 85%;
+    height: 250px;
+    margin: 0 auto;
+    background: lighten($color: c.$secondary, $amount: 10);
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.task-view-foot {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 20px;
+    transform: translateY(70px);
+    padding: 20px;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.task-view-done-btn {
+    grid-column-start: 3;
+    border: none;
+    border-radius: 10px;
+    background: c.$bg;
+    &:hover {
+        background: c.$accent;
+    }
+    cursor: pointer;
+
+    span {
+        position: relative;
+        top: -2px;
+        left: 8px;
+    }
+    padding-right: 20px;
+    padding-top: 4px;
+}
+
+.task-view-delete-btn {
+    grid-column-start: 4;
+    background: c.$high;
+    border: none;
+    border-radius: 10px;
+    color: c.$bg;
+    cursor: pointer;
+    &:hover {
+        color: darken($color: c.$high, $amount: 20)
+    }
+
+    span {
+        position: relative;
+        top: -2px; 
+    }
+    padding-top: 4px;
+}
+
+.task-view-edit-btn {
+    background: none;
+    border: none;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 6px;
+    &:hover {
+        background: c.$primary;
+        color: c.$bg;
+    }
+}
+
+.task-view-edit {
+    background: none;
+    width: 90%;
+    margin: 0 auto;
+    height: 250px;
+
+    textarea {
+        width: 98%;
+        height: 300px;
+        resize: none;
+        max-height: 300px;
+        border: none;
+        font-size: 1rem;
+    }
+}
+
+.markdown {
+    overflow-y: auto;
+    height: 250px;
+    margin: 0 auto;
+    width: 90%;
+}
+
+.task-expand {
+    position: absolute;
+    padding: 10px;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
 }

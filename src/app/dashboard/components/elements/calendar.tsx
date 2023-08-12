@@ -8,6 +8,7 @@ import Success from '@/assets/success.png'
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
+import { priorityMap } from '@/app/redux/features/taskSlice';
 type Props = {}
 
 const Calendar = (props: Props) => {
@@ -130,7 +131,7 @@ const Calendar = (props: Props) => {
                                         <div key={task.id} className={styles['task-card']}>
                                             <h4>{task.data['title']}</h4>
                                             <p className={styles['category']} style={catStyle}>{task.data['categoryName']}</p>
-                                            <p className={`${styles['priority']} ${styles[task.data.priority]}`}>{task.data['priority']}</p>
+                                            <p className={`${styles['priority']} ${styles[priorityMap[task.data.priority]]}`}>{priorityMap[task.data['priority']]}</p>
                                         </div>
                             )}})}
                         </div>

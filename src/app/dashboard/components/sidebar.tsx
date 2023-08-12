@@ -45,7 +45,7 @@ const Sidebar = (props: Props) => {
                 <div onClick={() => setIsOpen(!isOpen)}>
                     <LuMenu size={32}></LuMenu>
                 </div>
-                {isOpen &&<h1 className='highlight-logo'>TaskTide</h1>}
+                {isOpen &&<h1 className='highlight'>TaskTide</h1>}
                 <hr></hr>
             </div>
 

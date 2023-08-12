@@ -34,14 +34,6 @@ const Dashboard = (props: Props) => {
         if (user) fetchData();
     }, [user, router, loading])
    
-    if (loading) {
-        return (
-            <div>
-                Hehehehaw
-            </div>
-        );
-    }
-
     return (
         <div className={styles.dashboard}>
             <div className={styles['topbar-container']}>

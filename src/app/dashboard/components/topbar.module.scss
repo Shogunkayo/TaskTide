@@ -238,17 +238,17 @@
                 color: lighten(c.$secondary, 10);
             }
 
-            .low {
+            .Low {
                 background-color: c.$low;
                 color: darken($color: c.$low, $amount: 30)
             }
 
-            .medium {
+            .Medium {
                 background-color: c.$medium;
                 color: darken($color: c.$medium, $amount: 30)
             }
 
-            .high {
+            .High {
                 background-color: c.$high;
                 color: darken($color: c.$high, $amount: 30)
             }

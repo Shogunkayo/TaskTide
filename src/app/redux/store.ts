@@ -4,13 +4,15 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from './features/authSlice';
 import viewReducer from './features/viewSlice';
 import taskReducer from './features/taskSlice';
+import kanbanReducer from './features/kanbanSlice';
 
 export const store = configureStore({
     devTools: true,
     reducer: {
         auth: authReducer,
         view: viewReducer,
-        task: taskReducer
+        task: taskReducer,
+        kanban: kanbanReducer,
     },
 });
 

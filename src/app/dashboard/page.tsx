@@ -11,6 +11,8 @@ import { RootState } from '../redux/store'
 import Topbar from './components/topbar'
 import { fetchTasksAndCategories, newTaskDays, setCategories, setTaskDays, setTasks } from '../redux/features/taskSlice'
 import Tasklist from './components/tasklist'
+import Kanban from './components/kanban'
+import { fetchColumnsAndBoards, setBoard, setCol } from '../redux/features/kanbanSlice'
 
 type Props = {}
 
@@ -25,9 +27,13 @@ const Dashboard = (props: Props) => {
         const fetchData = async () => {
             if (!user?.uid) return
             const [tasks, cats] = await fetchTasksAndCategories(user?.uid)
+            const [cols, boards] = await fetchColumnsAndBoards(user.uid)
+
             dispatch(setTasks(tasks))
             dispatch(setCategories(cats))
             dispatch(setTaskDays(newTaskDays(tasks)))
+            dispatch(setCol(cols))
+            dispatch(setBoard(boards))
         }
 
         if (!user && !loading) router.push("/");
@@ -37,13 +43,14 @@ const Dashboard = (props: Props) => {
     return (
         <div className={styles.dashboard}>
             <div className={styles['topbar-container']}>
-                <Topbar></Topbar>
+                <Topbar view={view}></Topbar>
             </div>
             <div className={styles['sidebar-container']}>
                 <Sidebar active={active}></Sidebar>
             </div>
             <div className={styles['content-container']}>
                 {view === 1 && <Tasklist></Tasklist>}
+                {view === 2 && <Kanban></Kanban>}
             </div>
         </div>
     )

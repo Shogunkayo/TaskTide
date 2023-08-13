@@ -1,0 +1,98 @@
+@use '@/styles/colors' as c;
+
+.task-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparentize($color: c.$black, $amount: 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+.task-container {
+    background: c.$primary;
+    width: 70%;
+    height: 800px;
+    border-radius: 20px;
+    position: relative;
+
+    >button {
+        position: absolute;
+        background: none;
+        border: none;
+        cursor: pointer;
+        top: 15px;
+        right: 15px;
+        color: c.$bg;
+    }
+
+    >div {
+        overflow-y: auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        padding: 20px;
+        column-gap: 20px;
+        row-gap: 20px;
+        max-height: 700px;
+        transform: translateY(40px);
+    }
+}
+
+.task {
+    background: c.$bg;
+    border-radius: 20px;
+    height: 200px;
+    position: relative;
+    cursor: pointer;
+
+    h4 {
+        font-size: 1.2rem;
+        padding: 0px 10px;
+    }
+
+    &:hover {
+        transform: translate(-5px, -10px);
+    }
+}
+
+.task-footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 50px;
+    position: absolute;
+    bottom: 20px;
+    width: 95%;
+    text-align: center;
+    margin-left: 8px;
+
+    div {
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    &:last-child {
+        grid-column-start: 3;
+    }
+}
+
+.Low {
+    background-color: c.$low;
+    color: darken($color: c.$low, $amount: 30);
+    grid-column-start: 2;
+}
+
+.Medium {
+    background-color: c.$medium;
+    color: darken($color: c.$medium, $amount: 30);
+    grid-column-start: 2;
+}
+
+.High {
+    background-color: c.$high;
+    color: darken($color: c.$high, $amount: 30);
+    grid-column-start: 2;
+}

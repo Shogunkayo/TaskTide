@@ -3,8 +3,11 @@ import Clock from './elements/clock'
 import Calendar from './elements/calendar'
 import styles from './topbar.module.scss'
 import TaskBtn from './elements/taskBtn'
+import KanColBtn from './elements/kanColBtn'
 
-type Props = {}
+type Props = {
+    view: number
+}
 
 const Topbar = (props: Props) => {
     const now = new Date()
@@ -17,6 +20,7 @@ const Topbar = (props: Props) => {
             </div>
             <div className={styles.right}>
                 <TaskBtn></TaskBtn>
+                {props.view === 2 && (<KanColBtn></KanColBtn>)}
             </div>
         </nav>
     )

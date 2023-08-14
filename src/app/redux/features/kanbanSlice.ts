@@ -72,9 +72,16 @@ export const kanbanSlice = createSlice({
             state.kanCols = {...state.kanCols, [action.payload.colId]: {
                 ...state.kanCols[action.payload.colId], tasks: [...state.kanCols[action.payload.colId].tasks, action.payload.taskId]
             }}
+        },
+
+        removeTaskFromCol: (state, action) => {
+            state.kanCols = {...state.kanCols, [action.payload.colId]: {
+                ...state.kanCols[action.payload.colId], tasks: [...state.kanCols[action.payload.colId].tasks.slice(0, action.payload.taskIdx),
+                ...state.kanCols[action.payload.colId].tasks.slice(action.payload.taskIdx + 1)]
+            }}
         }
     }
 })
 
-export const {addCol, createBoard, setCol, setBoard, addTaskToCol} = kanbanSlice.actions
+export const {addCol, createBoard, setCol, setBoard, addTaskToCol, removeTaskFromCol} = kanbanSlice.actions
 export default kanbanSlice.reducer

@@ -15,7 +15,7 @@ export interface i_Task {
     categoryName: string,
     priority: number,
     createdAt: any,
-    deadline: any
+    deadline: any,
 }
 
 export interface i_Category {

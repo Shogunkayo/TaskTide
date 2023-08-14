@@ -82,17 +82,112 @@
 .Low {
     background-color: c.$low;
     color: darken($color: c.$low, $amount: 30);
-    grid-column-start: 2;
 }
 
 .Medium {
     background-color: c.$medium;
     color: darken($color: c.$medium, $amount: 30);
-    grid-column-start: 2;
 }
 
 .High {
     background-color: c.$high;
     color: darken($color: c.$high, $amount: 30);
-    grid-column-start: 2;
+}
+
+.kanban-nav {
+    position: absolute;
+    top: -100px;
+    left: -100px;
+}
+
+.kanban-container {
+    height: 830px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.col-container {
+    width: 350px;
+    border-radius: 20px;
+    background: transparentize(lighten($color: c.$secondary, $amount: 10), 0.5);
+    height: 830px;
+}
+
+.col-title {
+    border-radius: 20px 20px 0 0;
+    height: 55px;
+    text-align: center;
+    
+    h3 {
+        font-weight: 400;
+        padding: 10px;
+    }
+}
+
+.col-content {
+    margin-top: 2px;
+    height: 770px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.col-task {
+    background: c.$bg;
+    margin: 8px auto;
+    border-radius: 10px;
+    position: relative;
+    min-height: 170px;
+    height: 170px;
+    cursor: pointer;
+    width: 85%;
+
+    button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    >div {
+        h4 {
+            padding: 10px;
+            max-width: 95%;
+        }
+
+        >div {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 30px;
+            position: absolute;
+            bottom: 20px;
+            width: 90%;
+            text-align: center;
+            margin-left: 13px;
+
+            >div {
+                padding: 10px;
+                border-radius: 10px;
+            }
+        }
+    }
+}
+
+.col-add {
+    margin: 8px auto;
+    width: 85%;
+    cursor: pointer;
+}
+
+.col-add button {
+    cursor: pointer;
+    background: none;
+    border: 1px dotted darken($color: c.$secondary, $amount: 10);
+    height: 170px;
+    width: 100%;
+    margin: 8px auto;
+    font-size: 1.3rem;
+    color: darken($color: c.$secondary, $amount: 10);
 }

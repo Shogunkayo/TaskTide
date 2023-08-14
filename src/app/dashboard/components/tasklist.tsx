@@ -15,6 +15,7 @@ import { differenceInDays, differenceInHours, differenceInMinutes, differenceInM
 import { BiSolidEditAlt } from 'react-icons/bi'
 import { ReactMarkdown } from "react-markdown/lib/react-markdown"
 import { AiOutlineExpandAlt } from 'react-icons/ai'
+import { removeTaskFromCol } from "@/app/redux/features/kanbanSlice"
 
 type Props = {}
 
@@ -22,6 +23,7 @@ const Tasklist = (props: Props) => {
     const [user, _, __,] = useAuthState(auth)
     const tasks = useSelector((state: RootState) => state.task.tasks)
     const categories = useSelector((state: RootState) => state.task.categories)
+    const columns = useSelector((state: RootState) => state.kanban.kanCols)
     const [toShow, setToShow] = useState('all')
     const [deleteView, setDeleteView] = useState(false)
     const [toDelete, setToDelete] = useState('')
@@ -45,10 +47,9 @@ const Tasklist = (props: Props) => {
 
     const handleDelete = async () => {
         if (!user?.uid || !toDelete || !tasks[toDelete].category) return
-        
         /*
             Delete category if only one task remaining (task to be deleted) else update
-         */
+        */
         if (tasks[toDelete].category !== 'none') {
             console.log(tasks[toDelete].category)
             if (categories[tasks[toDelete].category].tasks.length === 1) {
@@ -60,11 +61,22 @@ const Tasklist = (props: Props) => {
                 })
             }
         }
+        
+        Object.keys(columns).map((column) => {
+            let i = columns[column].tasks.indexOf(toDelete)
+            if (i > -1) {
+                updateDoc(doc(db, `users/${user.uid}/kanbanColumns/${column}`), {
+                    tasks: arrayRemove(toDelete)
+                })
+                dispatch(removeTaskFromCol({colId: column, taskIdx: i}))
+            }
+        })
+
         await deleteDoc(doc(db, `users/${user?.uid}/tasks/${toDelete}`))
     
 
         const [newTasks, newCategories] = await fetchTasksAndCategories(user?.uid)
-             
+
     
         setToDelete('')
         setDeleteView(false)

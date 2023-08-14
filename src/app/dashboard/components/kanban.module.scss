@@ -103,10 +103,12 @@
 .kanban-container {
     height: 830px;
     display: flex;
-    justify-content: space-evenly;
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 .col-container {
+    margin: 0 10px;
     width: 350px;
     border-radius: 20px;
     background: transparentize(lighten($color: c.$secondary, $amount: 10), 0.5);
@@ -117,6 +119,7 @@
     border-radius: 20px 20px 0 0;
     height: 55px;
     text-align: center;
+    cursor: pointer;
     
     h3 {
         font-weight: 400;

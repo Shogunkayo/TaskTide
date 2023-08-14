@@ -79,9 +79,46 @@ export const kanbanSlice = createSlice({
                 ...state.kanCols[action.payload.colId], tasks: [...state.kanCols[action.payload.colId].tasks.slice(0, action.payload.taskIdx),
                 ...state.kanCols[action.payload.colId].tasks.slice(action.payload.taskIdx + 1)]
             }}
+        },
+
+        moveTask: (state, action) => {
+            if (action.payload.source.droppableId === action.payload.destination.droppableId) {
+                // Move task within same column
+                const newTasks = Array.from(state.kanCols[action.payload.source.droppableId].tasks)
+                newTasks.splice(action.payload.source.index, 1)
+                newTasks.splice(action.payload.destination.index, 0, action.payload.draggableId)
+
+                state.kanCols = {...state.kanCols, [action.payload.source.droppableId]: {
+                    ...state.kanCols[action.payload.source.droppableId], tasks: newTasks
+                }}
+            }
+            else {
+                // Move task between different columns
+                const sourceTasks = Array.from(state.kanCols[action.payload.source.droppableId].tasks)
+                sourceTasks.splice(action.payload.source.index, 1)
+
+                const destinationTasks = Array.from(state.kanCols[action.payload.destination.droppableId].tasks)
+                destinationTasks.splice(action.payload.destination.index, 0, action.payload.draggableId)
+
+                state.kanCols = {...state.kanCols, [action.payload.source.droppableId]: {
+                    ...state.kanCols[action.payload.source.droppableId], tasks: sourceTasks
+                }, [action.payload.destination.droppableId]: {
+                    ...state.kanCols[action.payload.destination.droppableId], tasks: destinationTasks
+                }}
+            }
+        },
+
+        moveColumn : (state, action) => {
+            const newColumns = Array.from(state.kanBoards[action.payload.source.droppableId].kanCols)
+            newColumns.splice(action.payload.source.index, 1)
+            newColumns.splice(action.payload.destination.index, 0, action.payload.draggableId)
+
+            state.kanBoards = {...state.kanBoards, [action.payload.source.droppableId]: {
+                ...state.kanBoards[action.payload.source.droppableId], kanCols: newColumns
+            }}
         }
     }
 })
 
-export const {addCol, createBoard, setCol, setBoard, addTaskToCol, removeTaskFromCol} = kanbanSlice.actions
+export const {addCol, createBoard, setCol, setBoard, addTaskToCol, removeTaskFromCol, moveTask, moveColumn} = kanbanSlice.actions
 export default kanbanSlice.reducer

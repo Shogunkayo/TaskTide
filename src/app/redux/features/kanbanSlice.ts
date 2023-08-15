@@ -7,6 +7,7 @@ import { collection, getDocs, query } from "firebase/firestore"
 export interface KanbanState {
     kanBoards: {[key: string]: KanBoard},
     kanCols: {[key: string]: KanCol}
+    currentBoard: string,
 }
 
 export interface KanBoard {
@@ -22,7 +23,8 @@ export interface KanCol {
 
 const initialState: KanbanState = {
     kanBoards: {},
-    kanCols: {}
+    kanCols: {},
+    currentBoard: ''
 }
 
 export const fetchColumnsAndBoards = async (userId: string) => {
@@ -62,6 +64,10 @@ export const kanbanSlice = createSlice({
 
         setCol: (state, action) => {
             state.kanCols = action.payload
+        },
+
+        setCurrentBoard: (state, action) => {
+            state.currentBoard = action.payload
         },
 
         setBoard: (state, action) => {
@@ -108,7 +114,7 @@ export const kanbanSlice = createSlice({
             }
         },
 
-        moveColumn : (state, action) => {
+        moveCol : (state, action) => {
             const newColumns = Array.from(state.kanBoards[action.payload.source.droppableId].kanCols)
             newColumns.splice(action.payload.source.index, 1)
             newColumns.splice(action.payload.destination.index, 0, action.payload.draggableId)
@@ -116,9 +122,28 @@ export const kanbanSlice = createSlice({
             state.kanBoards = {...state.kanBoards, [action.payload.source.droppableId]: {
                 ...state.kanBoards[action.payload.source.droppableId], kanCols: newColumns
             }}
+        },
+
+        deleteCol: (state, action) => {
+            state.kanBoards = {...state.kanBoards, [action.payload.boardId]: {
+                ...state.kanBoards[action.payload.boardId], kanCols: [
+                    ...state.kanBoards[action.payload.boardId].kanCols.slice(0, action.payload.colIdx),
+                    ...state.kanBoards[action.payload.boardId].kanCols.slice(action.payload.colIdx + 1)
+                ]
+            }}
+            
+            const newCols = {...state.kanCols}
+            delete newCols[action.payload.colId]
+            state.kanCols = newCols
+        },
+
+        deleteBoard: (state, action) => {
+            const newBoards = {...state.kanBoards}
+            delete newBoards[action.payload.boardId]
+            state.kanBoards = newBoards
         }
     }
 })
 
-export const {addCol, createBoard, setCol, setBoard, addTaskToCol, removeTaskFromCol, moveTask, moveColumn} = kanbanSlice.actions
+export const {addCol, deleteCol, createBoard, deleteBoard, setCurrentBoard, setCol, setBoard, addTaskToCol, removeTaskFromCol, moveTask, moveCol} = kanbanSlice.actions
 export default kanbanSlice.reducer

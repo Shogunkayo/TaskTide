@@ -4,6 +4,7 @@ import Calendar from './elements/calendar'
 import styles from './topbar.module.scss'
 import TaskBtn from './elements/taskBtn'
 import KanColBtn from './elements/kanColBtn'
+import KanBoardBtn from './elements/kanBoardBtn'
 
 type Props = {
     view: number
@@ -21,6 +22,7 @@ const Topbar = (props: Props) => {
             <div className={styles.right}>
                 <TaskBtn></TaskBtn>
                 {props.view === 2 && (<KanColBtn></KanColBtn>)}
+                {props.view === 2 && (<KanBoardBtn></KanBoardBtn>)}
             </div>
         </nav>
     )

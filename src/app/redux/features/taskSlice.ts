@@ -29,12 +29,16 @@ export interface TaskState {
     tasks: {[key: string]: i_Task},
     tasks_days: {[key: string]: {id: string, data: i_Task}},
     categories: {[key: string]: i_Category}
+    taskView: string,
+    categoryView: string
 }
 
 const initialState: TaskState = {
     tasks: {},
     tasks_days: {},
-    categories: {}
+    categories: {},
+    taskView: '',
+    categoryView: 'all',
 }
 
 export const priorityMap: {[key: number]: string} = {
@@ -107,10 +111,17 @@ export const taskSlice = createSlice({
             }}
 
             state.tasks_days = newTaskDays(state.tasks)
+        },
+
+        setTaskView: (state, action) => {
+            state.taskView = action.payload
+        },
+        
+        setCategoriesView: (state, action) => {
+            state.categoryView = action.payload
         }
     }
 })
 
-export const {addTasks, addCategories, addTaskDays, 
-    setTasks, setCategories, setTaskDays, addTaskToCategory, completeTask} = taskSlice.actions
+export const {addTasks, addCategories, setCategoriesView, addTaskDays, setTaskView, setTasks, setCategories, setTaskDays, addTaskToCategory, completeTask} = taskSlice.actions
 export default taskSlice.reducer

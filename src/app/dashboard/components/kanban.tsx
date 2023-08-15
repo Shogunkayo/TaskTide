@@ -1,8 +1,8 @@
 'use client'
 
-import { priorityMap } from "@/app/redux/features/taskSlice"
+import { priorityMap, setTaskView } from "@/app/redux/features/taskSlice"
 import { RootState } from "@/app/redux/store"
-import { MouseEvent, useEffect, useRef, useState } from "react"
+import { MouseEvent, useEffect, useState } from "react"
 import { IoClose } from "react-icons/io5"
 import { useDispatch, useSelector } from "react-redux"
 import styles from './kanban.module.scss'
@@ -12,6 +12,8 @@ import { useAuthState } from "react-firebase-hooks/auth"
 import { addTaskToCol, deleteBoard, deleteCol, moveCol, moveTask, removeTaskFromCol, setCurrentBoard } from "@/app/redux/features/kanbanSlice"
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { BsFillTrashFill, BsTrashFill } from "react-icons/bs"
+import { AiOutlineExpandAlt } from "react-icons/ai"
+import TaskView from "./elements/taskView"
 
 type Props = {}
 
@@ -20,7 +22,8 @@ const Kanban = (props: Props) => {
     const columns = useSelector((state: RootState) => state.kanban.kanCols)
     const toShow = useSelector((state: RootState) => state.kanban.currentBoard)
     const tasks = useSelector((state: RootState) => state.task.tasks)
-    const [taskView, setTaskView] = useState(false)
+    const taskView = useSelector((state: RootState) => state.task.taskView)
+    const [addView, setAddView] = useState(false)
     const [colToAdd, setColToAdd] = useState('')
     const [user, _, __] = useAuthState(auth)
     const [hasColChanged, setHasColChanged] = useState(false)
@@ -36,7 +39,7 @@ const Kanban = (props: Props) => {
         })
         
         dispatch(addTaskToCol({colId: colToAdd, taskId: taskId}))
-        setTaskView(false)
+        setAddView(false)
         setColToAdd('')
     }
 
@@ -160,6 +163,7 @@ const Kanban = (props: Props) => {
                                                         >
                                                             <div className={styles['col-task']} style={{boxShadow: `0 0 5px 1px ${tasks[task].color}`}}>
                                                                 <button id={task} className={col} onClick={handleDeleteTask}><IoClose></IoClose></button>
+                                                                <button style={{right: '30px'}} onClick={() => {dispatch(setTaskView(task))}}><AiOutlineExpandAlt></AiOutlineExpandAlt></button>
                                                                 <div>
                                                                     <h4>{tasks[task].title.slice(0, 40)}</h4>
                                                                     <div>
@@ -173,7 +177,7 @@ const Kanban = (props: Props) => {
                                                     </Draggable>
                                                 ))}
                                                 <div className={styles['col-add']}>
-                                                    <button onClick={() => {setTaskView(true); setColToAdd(col)}}>Add Task</button>
+                                                    <button onClick={() => {setAddView(true); setColToAdd(col)}}>Add Task</button>
                                                 </div>
                                             </div>
                                             {provided.placeholder}
@@ -195,10 +199,10 @@ const Kanban = (props: Props) => {
             </DragDropContext>
             }
 
-           {taskView && (
+           {addView && (
                 <div className={styles['task-modal']}>
                     <div className={styles['task-container']}>
-                    <button onClick={() => {setTaskView(false); setColToAdd('')}}><IoClose></IoClose></button>
+                    <button onClick={() => {setAddView(false); setColToAdd('')}}><IoClose></IoClose></button>
                     <div>
                         {Object.keys(tasks).map((task) => (
                             <div key={task} id={task} className={styles['task']} style={{boxShadow: `0 0 3px 2px ${tasks[task].color}`}} onClick={handleAddTask}>
@@ -213,6 +217,7 @@ const Kanban = (props: Props) => {
                     </div>
                 </div>
             )}
+            {taskView && <TaskView></TaskView>}
         </div>
     )
 }

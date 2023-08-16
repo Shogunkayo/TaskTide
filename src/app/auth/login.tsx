@@ -41,7 +41,7 @@ const Login = (props: Props) => {
             }
             else {
                 dispatch(changeOpen(false))
-                router.push('/dashboard')
+                router.push('/home')
             }
 
         } catch (error: any) {

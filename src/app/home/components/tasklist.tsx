@@ -74,7 +74,7 @@ const Tasklist = (props: Props) => {
                 if (catView === 'all' || tasks[task].category === catView)
                 return (
                 <div key={task} className={`${styles['task']} ${tasks[task].completed && styles['task-done']}`}
-                    style={{boxShadow: `0 0 5px 2px ${tasks[task].color}`}}
+                    style={{boxShadow: `0 0 7px 1px ${tasks[task].color}`}}
                 >
                     <div className={styles['task-expand']}
                     onClick={() => dispatch(setTaskView(task))}>

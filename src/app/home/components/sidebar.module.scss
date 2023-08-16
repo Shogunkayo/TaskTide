@@ -1,33 +1,18 @@
 @use '@/styles/colors' as c;
 
-@keyframes inactiveAnimation {
-    0% {
-        background-color: darken($color: c.$accent, $amount: 30);
-    }
-    100% {
-        background-color: c.$bg;
-    }
-}
-
 .sidebarOpen {
     background: c.$bg;
-    position: absolute;
-    transform: translateX(10px);
-    box-shadow: 5px 5px 15px c.$primary;
-    border-radius: 20px;
-    top: 20px;
-    bottom: 20px;
-    width: 12%;
-    .logo {
-        hr {
-            transform: translateY(10px);
-        }
-    }
+    height: 100vh;
+    max-width: 200px;
 
     .active {
         background: darken($color: c.$accent, $amount: 30);
     }
-    
+   
+    .logo {
+        transform: translateX(-10px);
+    }
+
     .content>div, .logout {
             border-radius: 25px;
             padding: 2px 0px;
@@ -54,14 +39,10 @@
 
 .sidebarClosed {
     background: c.$bg;
-    position: relative;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-    border-radius: 20px;
-    max-width: 64px;
-    box-shadow: 3px 3px 10px c.$primary;
+    max-width: 45px;
+    height: 100vh;
+    overflow-y: hidden;
+
     .content>div>div, .logout>div {
         &:hover {
             background: c.$accent;
@@ -73,24 +54,8 @@
         background: darken($color: c.$accent, $amount: 30);
     }
 
-
-    .profile {
-        >div {
-            height:48px;
-            width:48px;
-        }
-    }
-
-    .logo {
-        margin-bottom: 20px;
-    }
-
-    .content {
-        margin-bottom: 20px;
-
-        >div {
-        margin: 5px 0px;
-        }
+    .content>div {
+        transform: translateY(35px);
     }
 
     .logout {
@@ -102,18 +67,17 @@
         transform: translateX(5px);
     }
 
-    hr {
-        transform: translateX(-3px);
-    }
 }
 
 .sidebar {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 10px;
     background: c.$primary;
+    padding: 0 20px 0 15px;
     color: c.$bg;
+    border-radius: 0 20px 20px 0;
+    box-shadow: 0 0 10px 3px c.$black;
 }
 
 .logo {
@@ -140,10 +104,6 @@
         transform: translateY(-3px) translateX(5px) ;
     }
 
-    hr {
-        position: absolute;
-        bottom: -15px;
-    }
 }
 
 .content {
@@ -208,10 +168,6 @@
         transform: translateX(4px);
     }
 
-    hr {
-        position: absolute;
-        top: -20px;
-    }
 }
 
 .active {

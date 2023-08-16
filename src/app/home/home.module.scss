@@ -1,0 +1,34 @@
+@use '@/styles/colors' as c;
+
+.dashboard {
+    background-image: radial-gradient(
+        c.$secondary 5%,
+        transparent 10%
+    );
+    background-size: 50px 10px;
+    height: 100vh;
+    overflow-y: hidden;
+
+    display: grid;
+    grid-template-areas: 
+        "sidebar . topbar topbar topbar ."
+        "sidebar . content content content ."
+    ;
+    column-gap: 50px;
+    margin-right: 50px;
+}
+
+.sidebar-container {
+    grid-area: sidebar;
+}
+
+.topbar-container {
+    grid-area: topbar;
+    width: 1500px;
+    position: relative;
+}
+
+.content-container {
+    width: 1500px;
+    grid-area: content;
+}

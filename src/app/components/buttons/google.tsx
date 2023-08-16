@@ -25,7 +25,7 @@ const GoogleBtn = (props: Props) => {
             else {
                 console.log("THIS WAS CALLED GRRRR")
                 dispatch(setUser({'id': user.user.uid, 'email': user.user.email, 'photo': user.user.photoURL, 'username': user.user.displayName}))
-                router.push('/dashboard');
+                router.push('/home');
             }
         }
     }

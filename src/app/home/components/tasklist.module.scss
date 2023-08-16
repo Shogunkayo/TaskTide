@@ -23,12 +23,12 @@
     height: 860px;
     overflow-y: auto;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto;
-    background: c.$bg;
     border-radius: 10px;
-    box-shadow: 0 0 10px 3px c.$primary;
-    background: c.$primary;
+    box-shadow: 0 0 10px 3px c.$secondary;
+    background: transparentize($color: lighten(c.$secondary, 10), $amount: 0.5);
+    padding: 20px;
 }
 
 .task {
@@ -36,12 +36,11 @@
     position: relative;
     border-radius: 20px;
     padding: 10px;
-    margin: 15px 9px;
-    width: 90%;
+    margin: 20px 20px;
     background: c.$bg;
 
     &:hover {
-        transform: translate(-5px, -10px);
+        transform: translateY(-10px);
     }
 }
 
@@ -61,6 +60,7 @@
 }
 
 .task-category {
+    text-align: center;
     padding: 15px;
     border-radius: 10px;
 }
@@ -109,7 +109,10 @@
 
 .task-done {
     border: none;
-    opacity: 0.8;
+    background: transparentize($color: c.$secondary, $amount: 0.5);
+    &:hover {
+        transform: none;
+    }
 }
 
 .delete-container {

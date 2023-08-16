@@ -2,7 +2,7 @@
 
 import { useAuthState } from 'react-firebase-hooks/auth'
 import Sidebar from './components/sidebar'
-import styles from './dashboard.module.scss'
+import styles from './home.module.scss'
 import { useRouter } from 'next/navigation'
 import { auth } from '../auth/firebase'
 import { useEffect } from 'react'
@@ -16,7 +16,7 @@ import { fetchColumnsAndBoards, setBoard, setCol } from '../redux/features/kanba
 
 type Props = {}
 
-const Dashboard = (props: Props) => {
+const Home = (props: Props) => {
     const active = useSelector((state: RootState) => state.view.active)
     const dispatch = useDispatch()
     const router = useRouter();
@@ -56,4 +56,4 @@ const Dashboard = (props: Props) => {
     )
 }
 
-export default Dashboard
+export default Home

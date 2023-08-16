@@ -1,10 +1,9 @@
 'use client'
 
 import { RiBookletFill, RiDashboardFill, RiLogoutBoxFill } from 'react-icons/ri'
-import { BsFillChatRightTextFill, BsKanbanFill } from 'react-icons/bs'
+import { BsKanbanFill } from 'react-icons/bs'
 import { SiGraphql } from 'react-icons/si'
 import { HiUserGroup } from 'react-icons/hi'
-import { IoNotifications } from 'react-icons/io5'
 import { LuMenu } from 'react-icons/lu'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -35,8 +34,6 @@ const Sidebar = (props: Props) => {
         {'icon': (<BsKanbanFill size={iconSize}></BsKanbanFill>), 'p': 'Kanban Board'},
         {'icon': (<SiGraphql size={iconSize}></SiGraphql>), 'p': 'Graph View'},
         {'icon': (<HiUserGroup size={iconSize}></HiUserGroup>), 'p': 'Groups'},
-        {'icon': (<IoNotifications size={iconSize}></IoNotifications>), 'p': 'Notifications'},
-        {'icon': (<BsFillChatRightTextFill size={iconSize}></BsFillChatRightTextFill>), 'p': 'Chat'}
     ]
 
     return (
@@ -46,7 +43,6 @@ const Sidebar = (props: Props) => {
                     <LuMenu size={32}></LuMenu>
                 </div>
                 {isOpen &&<h1 className='highlight'>TaskTide</h1>}
-                <hr></hr>
             </div>
 
             <div className={styles.content}>
@@ -67,7 +63,6 @@ const Sidebar = (props: Props) => {
             </div>
 
             <div onClick={() => {signout(); dispatch(setUser(null)); router.push('/')}} className={styles.logout}>
-                <hr></hr>
                 <div><RiLogoutBoxFill size={32}></RiLogoutBoxFill></div>
                 {isOpen && <p>Logout</p>}
             </div>

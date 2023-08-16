@@ -14,6 +14,8 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { BsFillTrashFill, BsTrashFill } from "react-icons/bs"
 import { AiOutlineExpandAlt } from "react-icons/ai"
 import TaskView from "./elements/taskView"
+import Empty from '@/assets/empty.png'
+import Image from "next/image"
 
 type Props = {}
 
@@ -125,8 +127,12 @@ const Kanban = (props: Props) => {
         <div className='kanban-body'>
             {
                 toShow && boards[toShow].kanCols.length === 0 && (
-                    <div>
-                        <button onClick={handleDeleteBoard}><BsTrashFill></BsTrashFill>Delete Board</button>
+                    <div className={styles['empty-body']}>
+                        <div>
+                            <Image src={Empty} alt='empty' width={820}></Image>
+                            <p>No columns found :(</p>
+                            <button onClick={handleDeleteBoard}><BsTrashFill></BsTrashFill> <span>Delete Board</span></button>
+                        </div>
                     </div>
                 )
             }

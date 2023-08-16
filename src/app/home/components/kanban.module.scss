@@ -54,10 +54,11 @@
 }
 
 .task-container {
-    background: transparentize($color: c.$primary, $amount: 0.05);
+    border-radius: 10px;
+    box-shadow: 0 0 10px 1px c.$primary;
+    background: transparentize($color: lighten(c.$secondary, 10), $amount: 0.15);
     width: 70%;
     height: 800px;
-    border-radius: 20px;
     position: relative;
 
     >button {
@@ -67,7 +68,6 @@
         cursor: pointer;
         top: 15px;
         right: 15px;
-        color: c.$bg;
     }
 
     >div {
@@ -95,7 +95,7 @@
     }
 
     &:hover {
-        transform: translate(-5px, -10px);
+        transform: translateY(-10px);
     }
 }
 
@@ -135,11 +135,13 @@
 }
 
 .kanban-container {
+    width: fit-content;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding-bottom: 15px;
     height: 860px;
     display: flex;
-    max-width: 100%;
     overflow-x: auto;
-    justify-content: safe center;
 }
 
 .col-container {
@@ -249,5 +251,38 @@
         &:hover {
             background: darken($color: c.$high, $amount: 1);
         }
+    }
+}
+
+.empty-body {
+    background: transparentize($color: c.$secondary, $amount: 0.7);
+    transform: translateY(120px);
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    box-shadow: 0 0 5px 1px c.$secondary;
+    position: relative;
+
+    p {
+        text-align: center;
+        font-size: 1.4rem;
+        transform: translateY(-30px);
+    }
+
+    button {
+        position: absolute;
+        left: 0;
+        right: 0;
+        background: c.$high;
+        margin: 0 auto;
+        border: none;
+        color: c.$bg;
+        border-radius: 10px;
+        padding: 15px;
+        cursor: pointer;
+        transform: translateY(-20px);
     }
 }

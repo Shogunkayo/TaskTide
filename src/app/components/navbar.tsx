@@ -30,7 +30,7 @@ const Navbar = (props: Props) => {
     useEffect(() => {
         if(user && !authModal.isOpen) {
             dispatch(setUser({'id': user.uid, 'username': user.displayName, 'photo': user.photoURL, 'email': user.email})) 
-            router.push('/dashboard')
+            router.push('/home')
         }
         if(!loading && !user) setPageLoading(false)
     }, [user, router, loading])

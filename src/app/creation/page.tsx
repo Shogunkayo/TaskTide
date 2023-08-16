@@ -22,7 +22,7 @@ const Creation = (props: Props) => {
 
     useEffect(() => {
         if (!user) router.push('/')
-        if (user?.photo && user.username) router.push('/dashboard')
+        if (user?.photo && user.username) router.push('/home')
     }, [user, router])
 
     const avatars = [
@@ -53,7 +53,7 @@ const Creation = (props: Props) => {
         try {
             await updateProfile({displayName: inputs['username'], photoURL: inputs['photo']})
             dispatch(setUser({'id': user?.id, 'email': user?.email, 'username': inputs['username'], 'photo': inputs['photo']}))
-            router.push('/dashboard')
+            router.push('/home')
         } catch (error: any) {
             return toast.error(error.message, {position: 'top-center', autoClose: 3000, theme:'dark'})
         }

@@ -3,7 +3,7 @@ import './style.scss'
 import Hero from '@/assets/hero.png'
 import Kanban from '@/assets/kanban.png'
 import Dashboard from '@/assets/dashboard.png'
-import Computer from '@/assets/computer.png'
+import ContactHero from '@/assets/contact.png'
 import Navbar from './components/navbar'
 import SignupBtn from './components/buttons/signupBtn'
 import LoginBtn from './components/buttons/loginBtn'
@@ -53,7 +53,7 @@ export default function Home() {
 
             <div id='contact'>
                 <div className='contact-hero'>
-                    <Image src={Computer} alt='computer' width={640} height={640}></Image>
+                    <Image src={ContactHero} alt='computer' width={640} height={640}></Image>
                 </div>
                 <div className='contact-content'>
                     <p>Whether you want to discuss the existence of magical creatures, brainstorm bizarre inventions, or simply exchange jokes that tickle your funny bone, my inbox is eagerly awaiting your arrival!</p>

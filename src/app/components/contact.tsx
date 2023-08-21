@@ -31,17 +31,19 @@ const Contact  = (props: Props) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <h3>Contact Me!</h3>
-            <div>
-                <label htmlFor='email'>E-mail<span className='required'> *</span></label>
-                <input type='email' name='email' placeholder='name@website.com' required onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}></input>
+            <div className='home-contact'>
+                <h3>Contact Me!</h3>
+                <div>
+                    <label htmlFor='email'>E-mail<span className='required'> *</span></label>
+                    <input type='email' name='email' placeholder='name@website.com' required onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}></input>
+                </div>
+                <div>
+                    <label htmlFor='message'>Message<span className='required'> *</span></label>
+                    <textarea name='message' placeholder="message" required onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {setMessage(e.target.value)}}></textarea>
+                </div>
+                <button type='submit' className='button-accent'>{contactLoading === 'loading' && 'Sending...'}{contactLoading === 'sent' && 'Sent! :D'}
+                {!contactLoading && 'Send'}</button>
             </div>
-            <div>
-                <label htmlFor='message'>Message<span className='required'> *</span></label>
-                <textarea name='message' placeholder="message" required onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {setMessage(e.target.value)}}></textarea>
-            </div>
-            <button type='submit' className='button-accent'>{contactLoading === 'loading' && 'Sending...'}{contactLoading === 'sent' && 'Sent! :D'}
-            {!contactLoading && 'Send'}</button>
         </form>
 
     )

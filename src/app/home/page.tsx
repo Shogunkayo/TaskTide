@@ -37,6 +37,7 @@ const Home = (props: Props) => {
         }
 
         if (!user && !loading) router.push("/");
+        if (!user?.displayName || !user.photoURL) router.push("/creation");
         if (user) fetchData();
     }, [user, router, loading])
    

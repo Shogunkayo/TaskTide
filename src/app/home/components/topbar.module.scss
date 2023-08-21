@@ -3,28 +3,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Marck+Script&display=swap');
 
 .topbar {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+    display: grid;
+    grid-template-areas: 'left right';
     background: c.$bg;
     box-shadow: 0 0 10px 2px c.$primary;
     border-radius: 0 0 20px 20px;
-    padding: 10px 0px;
+    padding: 10px 200px;
 }
 
 .left {
     display: flex;
     gap: 20px;
+    grid-area: left;
 }
 
 .right {
     display: flex;
+    flex-direction: row-reverse;
     button {
         margin: 0 5px;
     }
     >div {
         position: relative;
     }
+    grid-area: right;
 }
 
 .clock {
@@ -35,6 +37,8 @@
         margin: 0;
         padding: 0;
     }
+
+    grid-area: clock;
 }
 
 .calendar {
@@ -45,6 +49,7 @@
         padding: 0;
         font-family: 'Poppins', sans-serif;
     }
+    grid-area: calendar;
 }
 
 .calendar-closed {
@@ -258,6 +263,7 @@
 
 .task-container {
     box-shadow: 7px 7px 10px c.$primary;
+    grid-area: task;
     position: absolute;
     z-index: 10;
     border: 3px solid c.$primary;

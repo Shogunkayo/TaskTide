@@ -4,12 +4,13 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import Image from "next/image"
 import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
-import { useUpdateProfile } from "react-firebase-hooks/auth";
+import { useAuthState, useUpdateProfile } from "react-firebase-hooks/auth";
 import { auth } from "../auth/firebase";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../redux/features/authSlice";
 import { RootState } from "../redux/store";
+import styles from './creation.module.scss'
 
 type Props = {}
 
@@ -17,13 +18,14 @@ const Creation = (props: Props) => {
     const [inputs, setInputs] = useState({'username': '', 'photo': ''})
     const router = useRouter()
     const dispatch = useDispatch()
-    const user = useSelector((state: RootState) => state.auth.user)
+    const [user, _, __] = useAuthState(auth)
     const [updateProfile, updating, profileError] = useUpdateProfile(auth)
 
     useEffect(() => {
         if (!user) router.push('/')
-        if (user?.photo && user.username) router.push('/home')
-    }, [user, router])
+        if (user?.photoURL && user.displayName) router.push('/home')
+        console.log(inputs)
+    }, [user, router, inputs])
 
     const avatars = [
         {'src': 'https://firebasestorage.googleapis.com/v0/b/tasktide-1688766801877.appspot.com/o/avatars%2Favatar1.png?alt=media&token=cfe3dec4-17ca-44d5-9f1c-4c732dbaf541', 'name': 'avatar1'},
@@ -52,7 +54,7 @@ const Creation = (props: Props) => {
             return toast.error('Please fill the required fields', {position: 'top-center', autoClose: 3000, theme:'dark'})
         try {
             await updateProfile({displayName: inputs['username'], photoURL: inputs['photo']})
-            dispatch(setUser({'id': user?.id, 'email': user?.email, 'username': inputs['username'], 'photo': inputs['photo']}))
+            dispatch(setUser({'id': user?.uid, 'email': user?.email, 'username': inputs['username'], 'photo': inputs['photo']}))
             router.push('/home')
         } catch (error: any) {
             return toast.error(error.message, {position: 'top-center', autoClose: 3000, theme:'dark'})
@@ -60,24 +62,26 @@ const Creation = (props: Props) => {
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor='username'>Enter an awesome username! <span className='required'>*</span></label>
-                    <input name='username' onChange={handleChange}/>
-                </div>
-                <div>
-                    <label htmlFor='photo'>Choose a stunning profile photo!</label>
+        <div className={styles['creation-bg']}>
+            <div className={styles['creation-container']}>
+                <form onSubmit={handleSubmit}>
                     <div>
-                        {(user && !user.photo) && avatars.map((avatar, i) => (
-                            <div key={i} onClick={() => handleClick(avatar.src)}>
-                                <Image src={avatar['src']} width={256} height={256} alt='avatar'></Image>
-                            </div>
-                        ))}
+                        <label htmlFor='username'>Enter an awesome username! <span className='required'>*</span></label>
+                        <input name='username' onChange={handleChange}/>
                     </div>
-                </div>
-                <button type='submit' className='button-primary'></button>
-            </form>
+                    <div>
+                        <label htmlFor='photo'>Choose a stunning profile photo!</label>
+                        <div className={styles['photo-container']}>
+                            {(user && !user.photoURL) && avatars.map((avatar, i) => (
+                                <div key={i} onClick={() => handleClick(avatar.src)} className={`${inputs['photo'] === avatar.src ? styles['selected-photo'] : ''}`}>
+                                    <div><Image src={avatar['src']} width={128} height={128} alt='avatar'></Image></div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <button type='submit' className='button-primary'>Submit</button>
+                </form>
+            </div>
             <ToastContainer></ToastContainer>
         </div>
     )

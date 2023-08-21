@@ -21,10 +21,10 @@ const Topbar = (props: Props) => {
                 <div className={styles.calendar}><Calendar></Calendar></div>
             </div>
             <div className={styles.right}>
-                {props.view === 1 && <CatViewBtn></CatViewBtn>}
-                {props.view === 2 && <KanBoardBtn></KanBoardBtn>}
-                {props.view === 2 && <KanColBtn></KanColBtn>}
                 <TaskBtn></TaskBtn>
+                {props.view === 1 && <CatViewBtn></CatViewBtn>}
+                {props.view === 2 && <KanColBtn></KanColBtn>}
+                {props.view === 2 && <KanBoardBtn></KanBoardBtn>}
             </div>
         </nav>
     )

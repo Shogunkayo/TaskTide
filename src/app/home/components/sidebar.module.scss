@@ -155,6 +155,7 @@
     cursor: pointer;
     display: flex;
     position: relative;
+    transform: translateY(-10px);
 
     >div {
         padding: 8px;

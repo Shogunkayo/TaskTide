@@ -22,7 +22,7 @@ const KanBoardBtn = (props: Props) => {
     return (
         <nav className={styles['kanban-nav']}>
             <button className='button-primary' onClick={() => setView(!view)}>{currentBoard ? boards[currentBoard].title : 'Boards'}</button>
-                {view && (
+                {view && Object.keys(boards).length !== 0 && (
                 <div className={styles['board-modal']}>
                     <button className={styles['board-close']} onClick={() => setView(!view)}><IoClose></IoClose></button>
                     <div className={styles['board-container']}>

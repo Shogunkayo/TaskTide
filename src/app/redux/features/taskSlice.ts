@@ -48,7 +48,7 @@ export const priorityMap: {[key: number]: string} = {
 }
 
 export const fetchTasksAndCategories = async (userId: string) => {
-    const taskRef = query(collection(db, `users/${userId}/tasks`), orderBy('deadline'), orderBy('category'), orderBy('priority'), orderBy('createdAt'))
+    const taskRef = query(collection(db, `users/${userId}/tasks`), orderBy('completed'), orderBy('deadline'), orderBy('category'), orderBy('priority'), orderBy('createdAt'))
     const catRef = query(collection(db, `users/${userId}/categories`), orderBy('title'))
     const taskSnap = await getDocs(taskRef)
     const catSnap = await getDocs(catRef)

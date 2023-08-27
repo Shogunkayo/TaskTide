@@ -30,9 +30,9 @@ const Sidebar = (props: Props) => {
 
     const contents = [
         {'icon': (<RiDashboardFill size={iconSize}></RiDashboardFill>), 'p': 'Dashboard'},
-        {'icon': (<RiBookletFill size={iconSize}></RiBookletFill>), 'p': 'Task List'},
-        {'icon': (<BsKanbanFill size={iconSize}></BsKanbanFill>), 'p': 'Kanban Board'},
-        {'icon': (<SiGraphql size={iconSize}></SiGraphql>), 'p': 'Graph View'},
+        {'icon': (<RiBookletFill size={iconSize}></RiBookletFill>), 'p': 'Tasks'},
+        {'icon': (<BsKanbanFill size={iconSize}></BsKanbanFill>), 'p': 'Kanban'},
+        {'icon': (<SiGraphql size={iconSize}></SiGraphql>), 'p': 'Graphs'},
         {'icon': (<HiUserGroup size={iconSize}></HiUserGroup>), 'p': 'Groups'},
     ]
 
@@ -42,29 +42,35 @@ const Sidebar = (props: Props) => {
                 <div onClick={() => setIsOpen(!isOpen)}>
                     <LuMenu size={32}></LuMenu>
                 </div>
-                {isOpen &&<h1 className='highlight'>TaskTide</h1>}
+                {isOpen && <h1>TaskTide</h1>}
             </div>
 
             <div className={styles.content}>
                 {contents.map((content, i) => (
                     <div key={i} id={i.toString()} className={`${props.active === i ? styles.active : styles.inactive} }`} onClick={() => dispatch(changeView(i))}>
-                        <div>{content['icon']}</div>
-                        {isOpen && <p>{content['p']}</p>}
+                        <div>
+                            {content['icon']}
+                            {isOpen && <p>{content['p']}</p>}
+                        </div>
                     </div>
                 ))}
             </div>
 
-            <div className={styles.profile}>
-                {isOpen && <>
+            {isOpen &&
+                <div className={styles.profile}>
+                <div>
                     <div><Image src={user?.photoURL ? user.photoURL : ''} alt='profile' width={64} height={64}></Image></div>
                     <h3>{user?.displayName}</h3>
                     <p>{user?.email}</p>
-                </>}
-            </div>
+                </div>
+                </div>
+            }
 
             <div onClick={() => {signout(); dispatch(setUser(null)); router.push('/')}} className={styles.logout}>
-                <div><RiLogoutBoxFill size={32}></RiLogoutBoxFill></div>
-                {isOpen && <p>Logout</p>}
+                <div>
+                    <RiLogoutBoxFill size={32}></RiLogoutBoxFill>
+                    {isOpen && <p>Logout</p>}
+                </div>
             </div>
 
         </nav>

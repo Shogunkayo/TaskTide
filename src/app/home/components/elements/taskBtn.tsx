@@ -114,7 +114,7 @@ const TaskBtn = (props: Props) => {
     }
 
     return (
-        <div>
+        <div className={styles['task-modal']}>
             <button className={`${isOpen ? 'button-primary' : 'button-accent'}`} onClick={() => {setIsOpen(!isOpen); setInputs(initialState)}}>New Task</button>
             {isOpen && (
                 <div className={styles['task-container']}>

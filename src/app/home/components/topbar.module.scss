@@ -8,7 +8,7 @@
     background: c.$bg;
     box-shadow: 0 0 10px 2px c.$primary;
     border-radius: 0 0 20px 20px;
-    padding: 10px 200px;
+    padding: 5px 200px;
 }
 
 .left {
@@ -22,6 +22,7 @@
     flex-direction: row-reverse;
     button {
         margin: 0 5px;
+        font-size: 14px;
     }
     >div {
         position: relative;
@@ -33,7 +34,7 @@
     margin: auto 0;
     h4 {
         font-family: 'Poppins', sans-serif;
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         margin: 0;
         padding: 0;
     }
@@ -44,7 +45,7 @@
 .calendar {
     margin: auto 0;
     h4 {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         margin: 0;
         padding: 0;
         font-family: 'Poppins', sans-serif;
@@ -124,6 +125,7 @@
         h4 {
             font-size: 1.2rem;
         }
+        transform: translateY(7px);
     }
 
     .calendar-left {
@@ -201,12 +203,14 @@
         .tasks {
             overflow-y: auto;
             max-height: 400px;
-            background: lighten($color: c.$secondary, $amount: 10);
+            background: transparentize(lighten($color: c.$secondary, $amount: 5), 0.6);
+            border-radius: 10px;
             transform: translateX(-7px);
         }
 
         .task-card {
-            width: 90%;
+            position: relative;
+            width: 80%;
             margin: 30px auto;
             padding: 20px;
             border-radius: 20px;
@@ -215,10 +219,13 @@
             grid-template-columns: 1fr 1fr 1fr 1fr;
             grid-template-rows: 60px 1fr;
             background: c.$bg;
-            box-shadow: 5px 5px 5px c.$primary;
+            box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+
+            transition: .5s ease;
 
             &:hover {
-                transform: translateX(-5px) translateY(-5px);
+                transform: translateY(-3px);
+                box-shadow: rgba(0, 0, 0, 0.6) 0px 25px 30px -10px;
             }
 
             h4 {
@@ -331,4 +338,10 @@
 
 .color-selected {
     outline: 3px solid c.$primary;
+}
+
+.task-expand {
+    position: absolute;
+    right: 10px;
+    top: 10px;
 }

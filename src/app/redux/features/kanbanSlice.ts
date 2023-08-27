@@ -12,13 +12,14 @@ export interface KanbanState {
 
 export interface KanBoard {
     title: string,
-    kanCols: string []
+    kanCols: Array<string>,
+    tasks: Array<string>
 }
 
 export interface KanCol {
     color: string,
     title: string,
-    tasks: string []
+    tasks: Array<string>
 }
 
 const initialState: KanbanState = {
@@ -78,12 +79,20 @@ export const kanbanSlice = createSlice({
             state.kanCols = {...state.kanCols, [action.payload.colId]: {
                 ...state.kanCols[action.payload.colId], tasks: [...state.kanCols[action.payload.colId].tasks, action.payload.taskId]
             }}
+            state.kanBoards = {...state.kanBoards, [action.payload.boardId]: {
+                ...state.kanBoards[action.payload.boardId], tasks: [...state.kanBoards[action.payload.boardId].tasks, action.payload.taskId]
+            }}
         },
 
         removeTaskFromCol: (state, action) => {
             state.kanCols = {...state.kanCols, [action.payload.colId]: {
                 ...state.kanCols[action.payload.colId], tasks: [...state.kanCols[action.payload.colId].tasks.slice(0, action.payload.taskIdx),
                 ...state.kanCols[action.payload.colId].tasks.slice(action.payload.taskIdx + 1)]
+            }}
+
+            state.kanBoards = {...state.kanBoards, [action.payload.boardId]: {
+                ...state.kanBoards[action.payload.boardId], tasks: [...state.kanBoards[action.payload.boardId].tasks.slice(0, action.payload.taskIdx),
+                ...state.kanBoards[action.payload.boardId].tasks.slice(action.payload.taskIdx + 1)]
             }}
         },
 

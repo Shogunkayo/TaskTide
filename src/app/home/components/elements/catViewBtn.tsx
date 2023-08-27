@@ -21,9 +21,9 @@ const CatViewBtn = (props: Props) => {
             {view && <div className={styles['categories-modal']}>
                 <button onClick={() => setView(!view)}><IoClose></IoClose></button>
                 <div className={styles['categories-container']}>
-                    <button id='all' onClick={() => {dispatch(setCategoriesView('all')); setView(false)}} className={`${catView === 'all' ? 'button-accent' : 'button-primary'}`}>All</button>
+                    <button id='all' onClick={() => {dispatch(setCategoriesView('all')); setView(false)}}>All</button>
                     {Object.keys(categories).map((category) => (
-                        <button key={category} id={category} onClick={() => {dispatch(setCategoriesView(category)); setView(false)}} className={`${catView === category ? 'button-accent' : 'button-primary'}`}>
+                        <button key={category} id={category} onClick={() => {dispatch(setCategoriesView(category)); setView(false)}}>
                             {categories[category].title}
                         </button>
                     ))}

@@ -133,9 +133,9 @@ const TaskView = (props: Props) => {
                 </div>
                 <button className={styles['task-view-close']} onClick={() => {dispatch(setTaskView('')); setEditView(false); setEdit('')}}><IoClose></IoClose></button>
                 <div className={styles['task-view-ddln']}>
-                    Deadline: {tasks[taskId].deadline.toDate().toLocaleDateString('en-GB') !== '31/12/9999' ? format(tasks[taskId].deadline.toDate(), 'dd/MM/yyyy h:mm a') : '--.--'}
-                    <br></br>
                     Created on: {format(tasks[taskId].createdAt.toDate(), 'dd/MM/yyyy h:mm a')}
+                    <br></br>
+                    Deadline: {tasks[taskId].deadline.toDate().toLocaleDateString('en-GB') !== '31/12/9999' ? format(tasks[taskId].deadline.toDate(), 'dd/MM/yyyy h:mm a') : '--.--'}
                 </div>
 
                 <div className={styles['task-view-desc']}>

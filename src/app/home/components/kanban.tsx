@@ -39,8 +39,11 @@ const Kanban = (props: Props) => {
         await updateDoc(doc(db, `users/${user.uid}/kanbanColumns/${colToAdd}`), {
             tasks: arrayUnion(taskId)
         })
+        await updateDoc(doc(db, `users/${user.uid}/kanBoards/${toShow}`), {
+            tasks: arrayUnion(taskId)
+        })
         
-        dispatch(addTaskToCol({colId: colToAdd, taskId: taskId}))
+        dispatch(addTaskToCol({boardId: toShow, colId: colToAdd, taskId: taskId}))
         setAddView(false)
         setColToAdd('')
     }
@@ -55,8 +58,11 @@ const Kanban = (props: Props) => {
         await updateDoc(doc(db ,`users/${user.uid}/kanbanColumns/${colId}`), {
             tasks: arrayRemove(taskId)
         })
+        await updateDoc(doc(db, `users/${user.uid}/kanbanBoards/${toShow}`), {
+            tasks: arrayRemove(taskId)
+        })
 
-        dispatch(removeTaskFromCol({colId: colId, taskIdx: taskIdx}))
+        dispatch(removeTaskFromCol({boardId: toShow, colId: colId, taskIdx: taskIdx}))
     }
 
     const handleDeleteColumn = async (colId: string) => {
@@ -136,6 +142,27 @@ const Kanban = (props: Props) => {
                     </div>
                 )
             }
+            {
+                Object.keys(boards).length === 0 && (
+                    <div className={`${styles['empty-body']} ${styles['empty-body-down']}`}>
+                        <div>
+                            <Image src={Empty} alt='empty' width={820}></Image>
+                            <p>No boards found :(  Get started by creating a new column!</p>
+                        </div>
+                    </div>
+                )
+            }
+            {
+                !toShow && Object.keys(boards).length !== 0 && (
+                    <div className={`${styles['empty-body']} ${styles['empty-body-down']}`}>
+                        <div>
+                            <Image src={Empty} alt='empty' width={820}></Image>
+                            <p>No board selected :o  Get started by selecting a board to view!</p>
+                        </div>
+                    </div>
+                )
+            }
+
             {toShow &&
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId={toShow} direction='horizontal' type='column'>
@@ -188,7 +215,7 @@ const Kanban = (props: Props) => {
                                             </div>
                                             {provided.placeholder}
                                             <div className={styles['col-delete']}>
-                                                <button onClick={() => {handleDeleteColumn(col)}}><BsFillTrashFill></BsFillTrashFill></button>
+                                                <button onClick={() => {handleDeleteColumn(col)}}><div><BsFillTrashFill></BsFillTrashFill></div></button>
                                             </div>
                                         </div>
                                     )}
@@ -210,7 +237,7 @@ const Kanban = (props: Props) => {
                     <div className={styles['task-container']}>
                     <button onClick={() => {setAddView(false); setColToAdd('')}}><IoClose></IoClose></button>
                     <div>
-                        {Object.keys(tasks).map((task) => (
+                        {Object.keys(tasks).map((task) => { if (!boards[toShow].tasks.includes(task))  return (
                             <div key={task} id={task} className={styles['task']} style={{boxShadow: `0 0 3px 2px ${tasks[task].color}`}} onClick={handleAddTask}>
                                 <h4>{tasks[task].title}</h4>
                                 <div className={styles['task-footer']}>
@@ -218,7 +245,7 @@ const Kanban = (props: Props) => {
                                     {tasks[task].categoryName && <div style={{backgroundColor: tasks[task].color}}>{tasks[task].categoryName.slice(0, 8)}</div>}
                                 </div>
                             </div>
-                        ))}
+                        )})}
                     </div>
                     </div>
                 </div>

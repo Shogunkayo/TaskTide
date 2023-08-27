@@ -25,6 +25,7 @@ const Tasklist = (props: Props) => {
     const dispatch = useDispatch()
 
     const handleDone = (e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation()
         if (tasks[e.currentTarget.name].completed) return
         updateDoc(doc(db, `users/${user?.uid}/tasks/${e.currentTarget.name}`), {
             completed: true            
@@ -38,7 +39,7 @@ const Tasklist = (props: Props) => {
 
     const getRemainingTime = (date: Date) => {
         const now = new Date()
-
+    
         if (now > date) {
             return 'Overdue'
         }
@@ -53,16 +54,24 @@ const Tasklist = (props: Props) => {
                 difference = differenceInDays(date, now)
                 format = ' day'
                 
-                if (difference > 30){
+                if (difference > 30) {
                     difference = differenceInMonths(date, now)
                     format = ' month'
                     
-                    if (difference > 1) {
-                        format += 's'
+                    if (difference > 36) {
+                        difference = 0
                     }
                 }
             }
         } 
+
+        if (difference > 1) {
+            format += 's'
+        }
+
+        if (difference === 0) {
+            return 'Not to worry :)'
+        }
 
         return difference + format
     }
@@ -74,13 +83,9 @@ const Tasklist = (props: Props) => {
                 if (catView === 'all' || tasks[task].category === catView)
                 return (
                 <div key={task} className={`${styles['task']} ${tasks[task].completed && styles['task-done']}`}
-                    style={{boxShadow: `0 0 7px 1px ${tasks[task].color}`}}
+                    onClick={() => dispatch(setTaskView(task))}
                 >
-                    <div className={styles['task-expand']}
-                    onClick={() => dispatch(setTaskView(task))}>
-                        <AiOutlineExpandAlt></AiOutlineExpandAlt>
-                    </div>
-                    <div className={styles['task-title']}>
+                    <div className={styles['task-title']} style={{backgroundColor: `${tasks[task].completed ? '' : tasks[task].color}`}}>
                         <h3>{tasks[task].title.slice(0, 24)}</h3>
                     </div>
                     <div className={styles['task-ddln']}>
@@ -93,7 +98,7 @@ const Tasklist = (props: Props) => {
                         <div className={`${styles[priorityMap[tasks[task].priority]]} ${styles['task-prty']}`}>
                             {priorityMap[tasks[task].priority]}
                         </div>
-                        {tasks[task].categoryName && (<div className={styles['task-category']} style={{'backgroundColor': tasks[task].color}}>
+                        {tasks[task].categoryName && (<div className={styles['task-category']} style={{'backgroundColor': categories[tasks[task].category].color}}>
                             {tasks[task].categoryName.slice(0, 8)}
                         </div>)}
                         {!tasks[task].completed && (

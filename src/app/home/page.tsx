@@ -44,7 +44,7 @@ const Home = (props: Props) => {
     return (
         <div className={styles.dashboard}>
             <div className={styles['topbar-container']}>
-                <Topbar view={view}></Topbar>
+                {view !== 0 &&<Topbar view={view}></Topbar>}
             </div>
             <div className={styles['sidebar-container']}>
                 <Sidebar active={active}></Sidebar>

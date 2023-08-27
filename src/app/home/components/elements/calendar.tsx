@@ -2,13 +2,14 @@
 
 import { add, eachDayOfInterval, endOfMonth, endOfWeek, format, getDay, isEqual, isSameDay, isSameMonth, parse, startOfMonth, startOfToday, startOfWeek } from 'date-fns'
 import { useState } from 'react'
-import {AiFillCaretDown} from 'react-icons/ai'
+import {AiFillCaretDown, AiOutlineExpandAlt} from 'react-icons/ai'
 import styles from '../topbar.module.scss';
 import Success from '@/assets/success.png'
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
-import { priorityMap } from '@/app/redux/features/taskSlice';
+import { priorityMap, setTaskView } from '@/app/redux/features/taskSlice';
+import { useDispatch } from 'react-redux';
 type Props = {}
 
 const Calendar = (props: Props) => {
@@ -20,6 +21,7 @@ const Calendar = (props: Props) => {
     const [selectedDay, setSelectedDay] = useState(today)
     const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'))
     const [isOpen, setIsOpen] = useState(false)
+    const dispatch = useDispatch()
     const [taskOnSelectedDay, setTaskOnSelectedDay] = useState(init)
 
     let firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date())

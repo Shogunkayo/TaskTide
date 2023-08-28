@@ -13,6 +13,7 @@ import { differenceInDays, differenceInHours, differenceInMinutes, differenceInM
 import { ReactMarkdown } from "react-markdown/lib/react-markdown"
 import { AiOutlineExpandAlt } from 'react-icons/ai'
 import TaskView from "./elements/taskView"
+import EmptyView from "./elements/emptyView"
 
 type Props = {}
 
@@ -78,6 +79,10 @@ const Tasklist = (props: Props) => {
 
     return (
         <div className={styles['tasklist-container']}>
+            {Object.keys(tasks).length === 0 && (
+                <EmptyView message="No tasks found :( Get started by creating a new task!"></EmptyView>
+            )}
+
             <div className={styles['task-container']}>
             {Object.keys(tasks).map((task) => {
                 if (catView === 'all' || tasks[task].category === catView)

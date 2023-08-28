@@ -16,6 +16,7 @@ import { AiOutlineExpandAlt } from "react-icons/ai"
 import TaskView from "./elements/taskView"
 import Empty from '@/assets/empty.png'
 import Image from "next/image"
+import EmptyView from "./elements/emptyView"
 
 type Props = {}
 
@@ -39,7 +40,7 @@ const Kanban = (props: Props) => {
         await updateDoc(doc(db, `users/${user.uid}/kanbanColumns/${colToAdd}`), {
             tasks: arrayUnion(taskId)
         })
-        await updateDoc(doc(db, `users/${user.uid}/kanBoards/${toShow}`), {
+        await updateDoc(doc(db, `users/${user.uid}/kanbanBoards/${toShow}`), {
             tasks: arrayUnion(taskId)
         })
         
@@ -144,22 +145,12 @@ const Kanban = (props: Props) => {
             }
             {
                 Object.keys(boards).length === 0 && (
-                    <div className={`${styles['empty-body']} ${styles['empty-body-down']}`}>
-                        <div>
-                            <Image src={Empty} alt='empty' width={820}></Image>
-                            <p>No boards found :(  Get started by creating a new column!</p>
-                        </div>
-                    </div>
+                    <EmptyView message='No boards found :(  Get started by creating a new column!'></EmptyView>
                 )
             }
             {
                 !toShow && Object.keys(boards).length !== 0 && (
-                    <div className={`${styles['empty-body']} ${styles['empty-body-down']}`}>
-                        <div>
-                            <Image src={Empty} alt='empty' width={820}></Image>
-                            <p>No board selected :o  Get started by selecting a board to view!</p>
-                        </div>
-                    </div>
+                    <EmptyView message='No board selected :o  Get started by selecting a board to view!'></EmptyView>
                 )
             }
 
@@ -237,7 +228,7 @@ const Kanban = (props: Props) => {
                     <div className={styles['task-container']}>
                     <button onClick={() => {setAddView(false); setColToAdd('')}}><IoClose></IoClose></button>
                     <div>
-                        {Object.keys(tasks).map((task) => { if (!boards[toShow].tasks.includes(task))  return (
+                        {Object.keys(tasks).map((task) => { console.log("ToShow:", toShow, "Boards of toShow:",boards[toShow], "Tasks:",boards[toShow].tasks); if (!boards[toShow].tasks.includes(task))  return (
                             <div key={task} id={task} className={styles['task']} style={{boxShadow: `0 0 3px 2px ${tasks[task].color}`}} onClick={handleAddTask}>
                                 <h4>{tasks[task].title}</h4>
                                 <div className={styles['task-footer']}>

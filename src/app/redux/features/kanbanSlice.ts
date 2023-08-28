@@ -58,8 +58,7 @@ export const kanbanSlice = createSlice({
         addCol: (state, action) => {
             state.kanCols = {...state.kanCols, [action.payload.colId]:  action.payload.col};
             state.kanBoards = {...state.kanBoards, [action.payload.boardId]: {
-                title: state.kanBoards[action.payload.boardId].title,
-                kanCols: [...state.kanBoards[action.payload.boardId].kanCols, action.payload.colId]
+                ...state.kanBoards[action.payload.boardId], kanCols: [...state.kanBoards[action.payload.boardId].kanCols, action.payload.colId]
             }}
         },
 

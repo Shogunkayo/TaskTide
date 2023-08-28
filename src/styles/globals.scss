@@ -49,6 +49,10 @@ h3 {
     }
 }
 
+h4 {
+    font-weight: 550;
+}
+
 hr {
     width: 95%;
     color: transparentize($color: c.$secondary, $amount: 0.75);
@@ -99,11 +103,13 @@ form {
         }
         resize: vertical;
         max-height: 150px;
+        font-size: 18px;
     }
 
     textarea {
         min-height: 30px;
-        font-size: 15px;
+        font-size: 18px;
+        transition: none;
     }
 
     label {

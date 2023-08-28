@@ -279,9 +279,13 @@
     right: 0;
     transform: translateX(215px);
     .close-btn {
-        z-index: 30;
+        z-index: 50;
         border-radius: 20px;
         margin: 10px 85%;
+        &:hover {
+            cursor: pointer;
+            background: lighten($color: c.$secondary, $amount: 10); 
+        }
     }
 
     .task-open {

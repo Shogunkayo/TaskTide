@@ -53,7 +53,7 @@ const KanColBtn = (props: Props) => {
                 dispatch(addCol({boardId: boardId, colId: colRef.id, col: colData}))
             }
             else {
-                const boardData = {title: inputs['boardName'], kanCols: []}
+                const boardData = {title: inputs['boardName'], kanCols: [], tasks: []}
                 const boardRef = await addDoc(collection(db, `users/${user.uid}/kanbanBoards/`), boardData)
 
                 let colData = {...inputs, 'board': boardRef.id}

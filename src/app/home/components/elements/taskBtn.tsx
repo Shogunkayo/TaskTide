@@ -166,7 +166,7 @@ const TaskBtn = (props: Props) => {
                         </div>
                         <div>
                             <label htmlFor='deadline'>Deadline</label>
-                            <input type='datetime-local' name='deadline' onChange={handleChange}/>
+                            <input type='datetime-local' name='deadline' onChange={handleChange} style={{resize: 'none'}}/>
                         </div>
                         <button className='button-accent' type='submit'>Create Task</button>
                     </form>

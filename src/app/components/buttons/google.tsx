@@ -1,7 +1,7 @@
 import { auth } from '@/app/auth/firebase'
 import { setUser } from '@/app/redux/features/authSlice'
 import { useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useSignInWithGoogle } from 'react-firebase-hooks/auth'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'

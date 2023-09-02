@@ -53,7 +53,7 @@ const TaskBtn = (props: Props) => {
             const taskRef = await addDoc(collection(db, `users/${user?.uid}/tasks/`), taskData)
 
             dispatch(addTasks({'id': taskRef.id, 'data': taskData}))
-            dispatch(addTaskDays({'id': taskRef.id, 'data': taskData}))
+            dispatch(addTaskDays({'id': taskRef.id, 'date': taskData.deadline}))
         }
 
         else if (inputs['category'] === 'new') {
@@ -76,7 +76,7 @@ const TaskBtn = (props: Props) => {
                 })
 
                 dispatch(addTasks({'id': taskRef.id, 'data': taskData}))
-                dispatch(addTaskDays({'id': taskRef.id, 'data': taskData}))
+                dispatch(addTaskDays({'id': taskRef.id, 'date': taskData.deadline}))
                 dispatch(addTaskToCategory({'catId': cat_id, 'taskId': taskRef.id}))
             }
             
@@ -92,7 +92,7 @@ const TaskBtn = (props: Props) => {
                 })
 
                 dispatch(addTasks({'id': taskRef.id, 'data': taskData}))
-                dispatch(addTaskDays({'id': taskRef.id, 'data': taskData}))
+                dispatch(addTaskDays({'id': taskRef.id, 'date': taskData.deadline}))
                 dispatch(addCategories({'id': catRef.id, 'data': {...catData, 'tasks': [taskRef.id]}}))
             }
         }
@@ -106,7 +106,7 @@ const TaskBtn = (props: Props) => {
             })
             
             dispatch(addTasks({'id': taskRef.id, 'data': taskData}))
-            dispatch(addTaskDays({'id': taskRef.id, 'data': taskData}))
+            dispatch(addTaskDays({'id': taskRef.id, 'date': taskData.deadline}))
             dispatch(addTaskToCategory({'catId': inputs['category'], 'taskId': taskRef.id}))
         }
 

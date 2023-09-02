@@ -7,13 +7,13 @@ import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { AiOutlineCheck } from 'react-icons/ai'
 import { BiSolidEditAlt } from 'react-icons/bi'
 import { BsFillTrashFill } from 'react-icons/bs'
-import { completeTask, fetchTasksAndCategories, newTaskDays, priorityMap, setCategories, setTaskDays, setTaskView, setTasks } from '@/app/redux/features/taskSlice'
+import { completeTask, deleteCategory, deleteTask, deleteTaskDays, priorityMap, setTaskView, setTasks } from '@/app/redux/features/taskSlice'
 import { IoClose } from 'react-icons/io5'
 import { useDispatch } from 'react-redux'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth, db } from '@/app/auth/firebase'
 import { arrayRemove, deleteDoc, doc, updateDoc } from 'firebase/firestore'
-import { removeTaskFromCol } from '@/app/redux/features/kanbanSlice'
+import { handleDeleteTask, removeTaskFromCol } from '@/app/redux/features/kanbanSlice'
 
 
 type Props = {}
@@ -35,9 +35,21 @@ const TaskView = (props: Props) => {
         /*
             Delete category if only one task remaining (task to be deleted) else update
         */
+
+        setEdit('')
+        setEditView(false)
+        setDeleteView(false)
+        dispatch(setTaskView(''))
+
+        await deleteDoc(doc(db, `users/${user.uid}/tasks/${taskId}`))
+        dispatch(deleteTask({taskId: taskId, catId: tasks[taskId].category}))
+        dispatch(deleteTaskDays({taskId: taskId, date: tasks[taskId].deadline}))
+        dispatch(handleDeleteTask({taskId: taskId, userId: user.uid})) // delete from kanban colunm
+
         if (tasks[taskId].category !== 'none') {
             if (categories[tasks[taskId].category].tasks.length === 1) {
                 await deleteDoc(doc(db, `users/${user.uid}/categories/${tasks[taskId].category}`))
+                dispatch(deleteCategory({catId: tasks[taskId].category}))
             }
             else {
                 await updateDoc(doc(db, `users/${user?.uid}/categories/${tasks[taskId].category}`), {
@@ -45,30 +57,6 @@ const TaskView = (props: Props) => {
                 })
             }
         }
-        
-        Object.keys(columns).map((column) => {
-            let i = columns[column].tasks.indexOf(taskId)
-            if (i > -1) {
-                updateDoc(doc(db, `users/${user.uid}/kanbanColumns/${column}`), {
-                    tasks: arrayRemove(taskId)
-                })
-                dispatch(removeTaskFromCol({colId: column, taskIdx: i}))
-            }
-        })
-
-        await deleteDoc(doc(db, `users/${user?.uid}/tasks/${taskId}`))
-    
-
-        const [newTasks, newCategories] = await fetchTasksAndCategories(user?.uid)
-
-    
-        setDeleteView(false)
-        setEdit('')
-        setEditView(false)
-        dispatch(setTaskView(''))
-        dispatch(setTasks(newTasks))
-        dispatch(setCategories(newCategories))
-        dispatch(setTaskDays(newTaskDays(newTasks)))
     }
 
     const handleDone = (e: MouseEvent<HTMLButtonElement>) => {

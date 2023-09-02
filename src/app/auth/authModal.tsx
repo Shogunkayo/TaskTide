@@ -1,4 +1,3 @@
-import React from 'react'
 import { IoClose } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../redux/store'

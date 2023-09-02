@@ -63,8 +63,8 @@
 
 .task-container {
     border-radius: 10px;
-    box-shadow: 0 0 10px 1px c.$primary;
-    background: transparentize($color: lighten(c.$secondary, 10), $amount: 0.15);
+    background: transparentize($color: lighten(c.$primary, 5), $amount: 0.25);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     width: 70%;
     height: 800px;
     position: relative;
@@ -76,6 +76,11 @@
         cursor: pointer;
         top: 15px;
         right: 15px;
+        border-radius: 10px;
+        padding: 5px;
+        &:hover {
+            background: lighten($color: c.$secondary, $amount: 10); 
+        }
     }
 
     >div {
@@ -104,6 +109,7 @@
 
     &:hover {
         transform: translateY(-10px);
+        box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
     }
 }
 
@@ -146,7 +152,7 @@
     width: fit-content;
     max-width: 1500px;
     margin: 0 auto;
-    padding-bottom: 35px;
+    padding: 25px 0;
     height: 875px;
     display: flex;
     overflow: auto;
@@ -160,6 +166,7 @@
     background: transparentize(lighten($color: c.$secondary, $amount: 10), 0.5);
     height: 865px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
 }
 
 .col-title {

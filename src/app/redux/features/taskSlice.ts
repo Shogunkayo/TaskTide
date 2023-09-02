@@ -27,10 +27,10 @@ export interface i_Category {
 
 export interface TaskState {
     tasks: {[key: string]: i_Task},
-    tasks_days: {[key: string]: {id: string, data: i_Task}},
+    tasks_days: {[key: string]: Array<string>},
     categories: {[key: string]: i_Category}
     taskView: string,
-    categoryView: string
+    categoryView: string,
 }
 
 const initialState: TaskState = {
@@ -70,9 +70,9 @@ export const newTaskDays = (tasks: {[key: string]: i_Task}) => {
     for (const task in tasks) {
         let date = tasks[task].deadline.toDate().toLocaleDateString()
         if (date in temp)
-            temp[date].push({id: task, data: tasks[task]})
+            temp[date].push(task)
         else
-            temp[date] = [{id: task, data: tasks[task]}]
+            temp[date] = [task]
     }
     return temp
 }
@@ -87,11 +87,11 @@ export const taskSlice = createSlice({
         setTaskDays: (state, action) => {state.tasks_days = action.payload},
         addTaskDays: (state, action) => {
             let temp:any = state.tasks_days
-            const date = action.payload.data.deadline.toDate().toLocaleDateString()
+            const date = action.payload.date.toDate().toLocaleDateString()
             if (date in temp)
-                temp[date].push(action.payload)
+                temp[date].push(action.payload.id)
             else
-                temp[date] = [action.payload]
+                temp[date] = [action.payload.id]
             state.tasks_days = temp
         },
 
@@ -119,9 +119,50 @@ export const taskSlice = createSlice({
         
         setCategoriesView: (state, action) => {
             state.categoryView = action.payload
+        },
+
+        deleteTask: (state, action) => {
+            const newTasks = {...state.tasks}
+            delete newTasks[action.payload.taskId]
+            state.tasks = newTasks
+          
+            if (action.payload.catId === "none") return
+
+            const idx = state.categories[action.payload.catId].tasks.indexOf(action.payload.taskId)
+            state.categories = {...state.categories, [action.payload.catId]: {
+                ...state.categories[action.payload.catId], tasks: [
+                    ...state.categories[action.payload.catId].tasks.slice(0, idx),
+                    ...state.categories[action.payload.catId].tasks.slice(idx + 1)
+                ]
+            }}
+        },
+
+        deleteCategory: (state, action) => {
+            const newCategories = {...state.categories}
+            delete newCategories[action.payload.catId]
+            state.categories = newCategories
+        },
+
+        deleteTaskDays: (state, action) => {
+            if (!(action.payload.date in state.tasks_days)) return
+
+            const date = action.payload.date.toDate().toLocaleDateString()
+            if (state.tasks_days[date].length === 1) {
+                const newDays = {...state.tasks_days}
+                delete newDays[date]
+                state.tasks_days = newDays
+            }
+            else {
+                const idx = state.tasks_days[action.payload.date].indexOf(action.payload.taskId)
+                if (idx < 0) return
+                state.tasks_days = {...state.tasks_days, [action.payload.date]: [
+                    ...state.tasks_days[action.payload.date].slice(0, idx),
+                    ...state.tasks_days[action.payload.date].slice(idx + 1)
+                ]}
+            }
         }
     }
 })
 
-export const {addTasks, addCategories, setCategoriesView, addTaskDays, setTaskView, setTasks, setCategories, setTaskDays, addTaskToCategory, completeTask} = taskSlice.actions
+export const {addTasks, addCategories, setCategoriesView, addTaskDays, setTaskView, setTasks, setCategories, setTaskDays, addTaskToCategory, completeTask, deleteTask, deleteCategory, deleteTaskDays} = taskSlice.actions
 export default taskSlice.reducer

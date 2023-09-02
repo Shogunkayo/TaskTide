@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import React from 'react'
 import styles from '../kanban.module.scss'
 import Empty from '@/assets/empty.png'
 

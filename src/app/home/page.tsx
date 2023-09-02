@@ -13,6 +13,7 @@ import { fetchTasksAndCategories, newTaskDays, setCategories, setTaskDays, setTa
 import Tasklist from './components/tasklist'
 import Kanban from './components/kanban'
 import { fetchColumnsAndBoards, setBoard, setCol } from '../redux/features/kanbanSlice'
+import Dashboard from './components/dashboard'
 
 type Props = {}
 
@@ -44,12 +45,13 @@ const Home = (props: Props) => {
     return (
         <div className={styles.dashboard}>
             <div className={styles['topbar-container']}>
-                {view !== 0 &&<Topbar view={view}></Topbar>}
+                <Topbar view={view}></Topbar>
             </div>
             <div className={styles['sidebar-container']}>
                 <Sidebar active={active}></Sidebar>
             </div>
             <div className={styles['content-container']}>
+                {view === 0 && <Dashboard></Dashboard>}
                 {view === 1 && <Tasklist></Tasklist>}
                 {view === 2 && <Kanban></Kanban>}
             </div>

@@ -13,15 +13,15 @@ import { useDispatch } from 'react-redux';
 type Props = {}
 
 const Calendar = (props: Props) => {
+    const tasks = useSelector((state: RootState) => state.task.tasks)
     const tasks_days = useSelector((state: RootState) => state.task.tasks_days)
     const categories = useSelector((state: RootState) => state.task.categories)
-    const init: any = []
     const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
     const today = startOfToday()
     const [selectedDay, setSelectedDay] = useState(today)
     const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'))
     const [isOpen, setIsOpen] = useState(false)
-    const dispatch = useDispatch()
+    const init: any [] = []
     const [taskOnSelectedDay, setTaskOnSelectedDay] = useState(init)
 
     let firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date())
@@ -41,7 +41,7 @@ const Calendar = (props: Props) => {
         if (date.toLocaleDateString() in tasks_days){
             let flag = false
             for (let i=0; i<tasks_days[date.toLocaleDateString()].length; i++) {
-                if (!tasks_days[date.toLocaleDateString()][i]['data'].completed)
+                if (!tasks[tasks_days[date.toLocaleDateString()][i]].completed)
                     flag = true
             }
             return flag
@@ -64,7 +64,7 @@ const Calendar = (props: Props) => {
         if (!taskOnSelectedDay || taskOnSelectedDay.length === 0) return
         let flag = true
         for (let i=0; i<setTaskOnSelectedDay.length; i++) {
-            if (taskOnSelectedDay[i]['data'].completed === false) {
+            if (tasks[taskOnSelectedDay[i]].completed === false) {
                 flag = false
                 break
             }
@@ -122,18 +122,18 @@ const Calendar = (props: Props) => {
                         )}
                         <div className={styles['tasks']}>
                             {taskOnSelectedDay.length !== 0 && taskOnSelectedDay.map((task) => {
-                                if (!task.data.completed) {
+                                if (!tasks[task].completed) {
                                     let catStyle = {}
                                     
-                                    if (task.data['categoryName']) {
-                                        catStyle = {backgroundColor: categories[task.data.category].color}
+                                    if (tasks[task]['categoryName']) {
+                                        catStyle = {backgroundColor: categories[tasks[task].category].color}
                                     }
                                     
                                     return (
-                                        <div key={task.id} className={styles['task-card']}>
-                                            <h4>{task.data['title']}</h4>
-                                            <p className={styles['category']} style={catStyle}>{task.data['categoryName']}</p>
-                                            <p className={`${styles['priority']} ${styles[priorityMap[task.data.priority]]}`}>{priorityMap[task.data['priority']]}</p>
+                                        <div key={task} className={styles['task-card']}>
+                                            <h4>{tasks[task]['title']}</h4>
+                                            <p className={styles['category']} style={catStyle}>{tasks[task]['categoryName']}</p>
+                                            <p className={`${styles['priority']} ${styles[priorityMap[tasks[task].priority]]}`}>{priorityMap[tasks[task]['priority']]}</p>
                                         </div>
                             )}})}
                         </div>

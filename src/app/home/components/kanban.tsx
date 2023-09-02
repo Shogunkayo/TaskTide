@@ -31,6 +31,7 @@ const Kanban = (props: Props) => {
     const [user, _, __] = useAuthState(auth)
     const [hasColChanged, setHasColChanged] = useState(false)
     const [hasTaskChanged, setHasTaskChanged] = useState(false)
+    const [taskEmpty, setTaskEmpty] = useState(true)
 
     const dispatch = useDispatch()
 
@@ -201,7 +202,7 @@ const Kanban = (props: Props) => {
                                                     </Draggable>
                                                 ))}
                                                 <div className={styles['col-add']}>
-                                                    <button onClick={() => {setAddView(true); setColToAdd(col)}}>Add Task</button>
+                                                    <button onClick={() => {setTaskEmpty(true); setAddView(true); setColToAdd(col)}}>Add Task</button>
                                                 </div>
                                             </div>
                                             {provided.placeholder}
@@ -228,15 +229,19 @@ const Kanban = (props: Props) => {
                     <div className={styles['task-container']}>
                     <button onClick={() => {setAddView(false); setColToAdd('')}}><IoClose></IoClose></button>
                     <div>
-                        {Object.keys(tasks).map((task) => { console.log("ToShow:", toShow, "Boards of toShow:",boards[toShow], "Tasks:",boards[toShow].tasks); if (!boards[toShow].tasks.includes(task))  return (
-                            <div key={task} id={task} className={styles['task']} style={{boxShadow: `0 0 3px 2px ${tasks[task].color}`}} onClick={handleAddTask}>
-                                <h4>{tasks[task].title}</h4>
-                                <div className={styles['task-footer']}>
-                                    <div className={styles[priorityMap[tasks[task].priority]]}>{priorityMap[tasks[task].priority]}</div>
-                                    {tasks[task].categoryName && <div style={{backgroundColor: tasks[task].color}}>{tasks[task].categoryName.slice(0, 8)}</div>}
+                        {Object.keys(tasks).map((task) => { 
+                            if (!boards[toShow].tasks.includes(task))  {
+                                if (taskEmpty) setTaskEmpty(false)
+                                return (
+                                <div key={task} id={task} className={styles['task']} onClick={handleAddTask}>
+                                    <h4>{tasks[task].title}</h4>
+                                    <div className={styles['task-footer']}>
+                                        <div className={styles[priorityMap[tasks[task].priority]]}>{priorityMap[tasks[task].priority]}</div>
+                                        {tasks[task].categoryName && <div style={{backgroundColor: tasks[task].color}}>{tasks[task].categoryName.slice(0, 8)}</div>}
+                                    </div>
                                 </div>
-                            </div>
-                        )})}
+                            
+                        )}})}
                     </div>
                     </div>
                 </div>

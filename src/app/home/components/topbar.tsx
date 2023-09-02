@@ -1,4 +1,3 @@
-import React from 'react'
 import Clock from './elements/clock'
 import Calendar from './elements/calendar'
 import styles from './topbar.module.scss'

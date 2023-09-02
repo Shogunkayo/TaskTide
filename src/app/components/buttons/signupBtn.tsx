@@ -1,7 +1,6 @@
 'use client'
 
 import { changeOpen, changeType } from '@/app/redux/features/authSlice'
-import React from 'react'
 import { useDispatch } from 'react-redux'
 
 type Props = {

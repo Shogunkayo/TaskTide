@@ -1,0 +1,17 @@
+@use '@/styles/colors' as c;
+
+.dashboard-container {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    row-gap: 50px;
+}
+    
+.top {
+    height: 400px;
+}
+
+.bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 50px;
+}
